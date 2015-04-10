@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 public class Session {
     
     public Session() {
-         JOptionPane.showMessageDialog(null, "Hello from a new session!");
+         System.out.print("Hello from a new session!");
     }
    
 }
