@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blackjack.gui;
 
 /**
@@ -63,7 +58,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         betCheck1.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/oneDChipClick.png"))); // NOI18N
         betCheck1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                betCheck1ActionPerformed(evt);
+                oneDChipClick(evt);
             }
         });
         getContentPane().add(betCheck1);
@@ -237,13 +232,13 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void betCheck1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_betCheck1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_betCheck1ActionPerformed
-
     private void betCheck100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_betCheck100ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_betCheck100ActionPerformed
+
+    private void oneDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneDChipClick
+         System.out.print("One Dollar Chip Clicked!\n");
+    }//GEN-LAST:event_oneDChipClick
 
     /**
      * @param args the command line arguments

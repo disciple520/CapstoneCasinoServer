@@ -1,9 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package blackjack.controller;
+package blackjack.client;
 
 import blackjack.gui.CapstoneCasinoBlackjackUI;
 import java.io.BufferedReader;
@@ -17,16 +12,20 @@ import javax.swing.JOptionPane;
  *
  * @author Jerry
  */
-public class BlackjackController {
+public class BlackjackClient {
     public static void main(String[] args) throws IOException {
+        
         String serverAddress = (args.length == 0) ? "localhost" : args[1];
         Socket serverSocket = new Socket(serverAddress, 9090);
+        
         BufferedReader readFromServer = new BufferedReader(new InputStreamReader(serverSocket.getInputStream()));
         PrintWriter writeToServer = new PrintWriter(serverSocket.getOutputStream(), true);
         String successMessage = readFromServer.readLine();
+        JOptionPane.showMessageDialog(null, successMessage);
+        
         CapstoneCasinoBlackjackUI blackjackUI = new CapstoneCasinoBlackjackUI();
         blackjackUI.setVisible(true);
-        JOptionPane.showMessageDialog(null, successMessage);
+        
         //System.exit(0);
     }
 }
