@@ -1,18 +1,22 @@
 package blackjack.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import blackjack.server.BlackjackServer;
+
+
 /**
  *
  * @author Patrick
  */
-public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
-
+public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements ActionListener{
+    BlackjackServer blackjackServerTest = new BlackjackServer();
     /**
      * Creates new form CapstoneCasinoBlackjackUI
      */
     public CapstoneCasinoBlackjackUI() {
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -71,6 +75,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         betCheck5.setMultiClickThreshhold(200L);
         betCheck5.setName("betCheckFiveDollars"); // NOI18N
         betCheck5.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiveDChipClick.png"))); // NOI18N
+        betCheck5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fiveDChipClick(evt);
+            }
+        });
         getContentPane().add(betCheck5);
         betCheck5.setBounds(100, 533, 90, 90);
 
@@ -81,6 +90,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         betCheck25.setMultiClickThreshhold(200L);
         betCheck25.setName("betCheckTwentyFiveDollars"); // NOI18N
         betCheck25.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/twentyfiveDChipClick.png"))); // NOI18N
+        betCheck25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                twentyfiveDChipClick(evt);
+            }
+        });
         getContentPane().add(betCheck25);
         betCheck25.setBounds(190, 533, 90, 90);
 
@@ -91,6 +105,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         betCheck50.setMultiClickThreshhold(20L);
         betCheck50.setName("betCheckFiftyDollars"); // NOI18N
         betCheck50.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiftyDChipClick.png"))); // NOI18N
+        betCheck50.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fiftyDChipClick(evt);
+            }
+        });
         getContentPane().add(betCheck50);
         betCheck50.setBounds(280, 533, 90, 90);
 
@@ -103,7 +122,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         betCheck100.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/hundredDChipClick.png"))); // NOI18N
         betCheck100.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                betCheck100ActionPerformed(evt);
+                hundredDChipClick(evt);
             }
         });
         getContentPane().add(betCheck100);
@@ -117,6 +136,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         playButton.setMultiClickThreshhold(200L);
         playButton.setName("playButton"); // NOI18N
         playButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/playClick.png"))); // NOI18N
+        playButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                playButtonActionPerformed(evt);
+            }
+        });
         getContentPane().add(playButton);
         playButton.setBounds(750, 520, 100, 30);
 
@@ -128,6 +152,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         clearButton.setMultiClickThreshhold(200L);
         clearButton.setName("clearButton"); // NOI18N
         clearButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/clearClick.png"))); // NOI18N
+        clearButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearButtonClicked(evt);
+            }
+        });
         getContentPane().add(clearButton);
         clearButton.setBounds(750, 560, 100, 30);
 
@@ -135,11 +164,15 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         hitButton.setBorderPainted(false);
         hitButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         hitButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/hitGray.png"))); // NOI18N
-        hitButton.setEnabled(false);
         hitButton.setFocusPainted(false);
         hitButton.setMultiClickThreshhold(200L);
         hitButton.setName("hitButton"); // NOI18N
         hitButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/hitClick.png"))); // NOI18N
+        hitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hitButtonClicked(evt);
+            }
+        });
         getContentPane().add(hitButton);
         hitButton.setBounds(870, 520, 100, 30);
 
@@ -147,11 +180,15 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         doubleButton.setBorderPainted(false);
         doubleButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         doubleButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/doubleGray.png"))); // NOI18N
-        doubleButton.setEnabled(false);
         doubleButton.setFocusPainted(false);
         doubleButton.setMultiClickThreshhold(200L);
         doubleButton.setName("doubleButton"); // NOI18N
         doubleButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/doubleClick.png"))); // NOI18N
+        doubleButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                doubleButtonClicked(evt);
+            }
+        });
         getContentPane().add(doubleButton);
         doubleButton.setBounds(870, 560, 100, 30);
 
@@ -159,11 +196,15 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         standButton.setBorderPainted(false);
         standButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         standButton.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/standGray.png"))); // NOI18N
-        standButton.setEnabled(false);
         standButton.setFocusPainted(false);
         standButton.setMultiClickThreshhold(200L);
         standButton.setName("standButton"); // NOI18N
         standButton.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/standClick.png"))); // NOI18N
+        standButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                standButtonClicked(evt);
+            }
+        });
         getContentPane().add(standButton);
         standButton.setBounds(870, 600, 100, 30);
 
@@ -232,13 +273,46 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void betCheck100ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_betCheck100ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_betCheck100ActionPerformed
+    private void hundredDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hundredDChipClick
+        System.out.print("100 Dollar Chip Clicked!\n");
+    }//GEN-LAST:event_hundredDChipClick
 
     private void oneDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneDChipClick
          System.out.print("One Dollar Chip Clicked!\n");
+         blackjackServerTest.testMethod();
     }//GEN-LAST:event_oneDChipClick
+
+    private void fiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiveDChipClick
+        System.out.print("Five Dollar Chip Clicked!\n");
+    }//GEN-LAST:event_fiveDChipClick
+
+    private void twentyfiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twentyfiveDChipClick
+        System.out.print("25 Dollar Chip Clicked!\n");
+    }//GEN-LAST:event_twentyfiveDChipClick
+
+    private void fiftyDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiftyDChipClick
+        System.out.print("50 Dollar Chip Clicked!\n");
+    }//GEN-LAST:event_fiftyDChipClick
+
+    private void clearButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_clearButtonClicked
+
+    private void hitButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hitButtonClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_hitButtonClicked
+
+    private void doubleButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doubleButtonClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_doubleButtonClicked
+
+    private void standButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standButtonClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_standButtonClicked
+
+    private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_playButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -295,4 +369,9 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame {
     private javax.swing.JButton standButton;
     private javax.swing.JLabel timerLabel;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

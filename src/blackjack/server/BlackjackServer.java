@@ -1,5 +1,6 @@
 package blackjack.server;
 
+import blackjack.gui.CapstoneCasinoBlackjackUI;
 import blackjack.client.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -17,6 +18,7 @@ public class BlackjackServer {
     /**
      * Runs the server.
      */
+    
     public static void main(String[] args) throws IOException {
         InetAddress ip;
         ServerSocket listener = new ServerSocket(9090);
@@ -37,5 +39,8 @@ public class BlackjackServer {
         finally {
             listener.close();
         }
+    }
+    public void testMethod(){
+        System.out.println("you accessed this from the gui class");
     }
 }
