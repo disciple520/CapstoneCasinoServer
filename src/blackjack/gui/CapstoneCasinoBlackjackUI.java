@@ -3,6 +3,10 @@ package blackjack.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import blackjack.server.BlackjackServer;
+import blackjack.core.Blackjack;
+
+import java.util.List;
+import javax.swing.SwingWorker;
 
 
 /**
@@ -11,11 +15,53 @@ import blackjack.server.BlackjackServer;
  */
 public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements ActionListener{
     BlackjackServer blackjackServerTest = new BlackjackServer();
+    Blackjack blackjackTest = new Blackjack();
+
+    
     /**
      * Creates new form CapstoneCasinoBlackjackUI
      */
     public CapstoneCasinoBlackjackUI() {
         initComponents();
+    }
+   
+    private void swingWorkerBet(int value) {
+        int passed = value;
+        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+            
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return false;
+                
+            }
+            @Override
+            protected void done() {
+                System.out.println("You have finished the swing worker");
+                betLabel.setText(Integer.toString(passed));
+            }
+
+
+        };
+        worker.execute();
+    }
+    private void swingWorkerStake(int value) {
+        int passed = value;
+        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+            
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return false;
+                
+            }
+            @Override
+            protected void done() {
+                System.out.println("You have finished the swing worker");
+                stakeLabel.setText(Integer.toString(passed));
+            }
+
+
+        };
+        worker.execute();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -209,7 +255,6 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         standButton.setBounds(870, 600, 100, 30);
 
         betLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        betLabel.setText("1");
         betLabel.setToolTipText("");
         betLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().add(betLabel);
@@ -275,31 +320,35 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
 
     private void hundredDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hundredDChipClick
         System.out.print("100 Dollar Chip Clicked!\n");
+        swingWorkerBet(blackjackTest.updateBet(100));
     }//GEN-LAST:event_hundredDChipClick
 
     private void oneDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneDChipClick
          System.out.print("One Dollar Chip Clicked!\n");
-         blackjackServerTest.testMethod();
+         swingWorkerBet(blackjackTest.updateBet(1));
     }//GEN-LAST:event_oneDChipClick
 
     private void fiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiveDChipClick
         System.out.print("Five Dollar Chip Clicked!\n");
+        swingWorkerBet(blackjackTest.updateBet(5));
     }//GEN-LAST:event_fiveDChipClick
 
     private void twentyfiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twentyfiveDChipClick
         System.out.print("25 Dollar Chip Clicked!\n");
+        swingWorkerBet(blackjackTest.updateBet(25));
     }//GEN-LAST:event_twentyfiveDChipClick
 
     private void fiftyDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiftyDChipClick
         System.out.print("50 Dollar Chip Clicked!\n");
+        swingWorkerBet(blackjackTest.updateBet(50));
     }//GEN-LAST:event_fiftyDChipClick
 
     private void clearButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonClicked
-        // TODO add your handling code here:
+       swingWorkerBet(blackjackTest.resetBet());
     }//GEN-LAST:event_clearButtonClicked
 
     private void hitButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hitButtonClicked
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_hitButtonClicked
 
     private void doubleButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doubleButtonClicked
@@ -311,43 +360,45 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_standButtonClicked
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        // TODO add your handling code here:
+        swingWorkerStake(blackjackTest.getStake()); 
     }//GEN-LAST:event_playButtonActionPerformed
 
+                
+            
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+//    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CapstoneCasinoBlackjackUI().setVisible(true);
-            }
-        });
-    }
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new CapstoneCasinoBlackjackUI().setVisible(true);
+//          }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backGroundGraphic;
@@ -356,7 +407,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private javax.swing.JButton betCheck25;
     private javax.swing.JButton betCheck5;
     private javax.swing.JButton betCheck50;
-    private javax.swing.JLabel betLabel;
+    public javax.swing.JLabel betLabel;
     private javax.swing.JButton clearButton;
     private javax.swing.JButton doubleButton;
     private javax.swing.JButton hitButton;
