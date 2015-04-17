@@ -15,11 +15,13 @@ import blackjack.gui.CapstoneCasinoBlackjackUI;
 public class BlackjackController {
     
     public static void main(String[] args) {
+        CapstoneCasinoBlackjackUI gui = new CapstoneCasinoBlackjackUI();
+        
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                new CapstoneCasinoBlackjackUI().setVisible(true);
+                gui.setVisible(true);
             }
             
         });

@@ -1,7 +1,6 @@
 package blackjack.server;
 
 import blackjack.gui.CapstoneCasinoBlackjackUI;
-import blackjack.client.Session;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.InetAddress;
@@ -22,7 +21,6 @@ public class BlackjackServer {
     public static void main(String[] args) throws IOException {
         InetAddress ip;
         ServerSocket listener = new ServerSocket(9090);
-        Session session = new Session();
         try {
             while (true) {
                 ip = InetAddress.getLocalHost();
