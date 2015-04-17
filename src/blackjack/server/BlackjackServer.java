@@ -1,44 +1,59 @@
 package blackjack.server;
 
-import blackjack.gui.CapstoneCasinoBlackjackUI;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
+
 
 
 /**
+ * A server for a network multi-player tic tac toe game.  Modified and
+ * extended from the class presented in Deitel and Deitel "Java How to
+ * Program" book.  I made a bunch of enhancements and rewrote large sections
+ * of the code.  The main change is instead of passing *data* between the
+ * client and server, I made a TTTP (tic tac toe protocol) which is totally
+ * plain text, so you can test the game with Telnet (always a good idea.)
+ * The strings that are sent in TTTP are:
  *
- * @author Jerry
+ *  Client -> Server           Server -> Client
+ *  ----------------           ----------------
+ *  MOVE <n>  (0 <= n <= 8)    WELCOME <char>  (char in {X, O})
+ *  QUIT                       VALID_MOVE
+ *                             OTHER_PLAYER_MOVED <n>
+ *                             VICTORY
+ *                             DEFEAT
+ *                             TIE
+ *                             MESSAGE <text>
+ *
+ * A second change is that it allows an unlimited number of pairs of
+ * players to play.
  */
 public class BlackjackServer {
+
     /**
-     * Runs the server.
+     * Runs the application. Pairs up clients that connect.
      */
-    
-    public static void main(String[] args) throws IOException {
-        InetAddress ip;
-        ServerSocket listener = new ServerSocket(9090);
+    public static void main(String[] args) throws Exception {
+        ServerSocket listener = new ServerSocket(12345);
+        System.out.println("Blackjack Server is Running");
         try {
             while (true) {
-                ip = InetAddress.getLocalHost();
-		System.out.println("Current IP address : " + ip.getHostAddress());
-                Socket socket = listener.accept();
-                try {
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    out.println("Successfully connected to blackjack server");
-                } finally {
-                    socket.close();
-                }
+                Session session = new Session();
+                Session.Player playerX = session.new Player(listener.accept(), 'X');
+                Session.Player playerO = session.new Player(listener.accept(), 'O');
+                playerX.setOpponent(playerO);
+                playerO.setOpponent(playerX);
+                session.currentPlayer = playerX;
+                playerX.start();
+                playerO.start();
             }
-        }
-        finally {
+        } finally {
             listener.close();
         }
     }
-    public void testMethod(){
-        System.out.println("you accessed this from the gui class");
-    }
 }
+
+
