@@ -27,16 +27,16 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
    
     private void swingWorkerBet(int value) {
         int passed = value;
-        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             
             @Override
-            protected Boolean doInBackground() throws Exception {
-                return false;
+            protected Void doInBackground() throws Exception {
+                return null;
                 
             }
             @Override
             protected void done() {
-                System.out.println("You have finished the swing worker");
+                System.out.println("You have finished the swing worker for betting");
                 betLabel.setText(Integer.toString(passed));
             }
 
@@ -55,7 +55,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
             }
             @Override
             protected void done() {
-                System.out.println("You have finished the swing worker");
+                System.out.println("You have finished the swing worker for stake update");
                 stakeLabel.setText(Integer.toString(passed));
             }
 
@@ -360,45 +360,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_standButtonClicked
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        swingWorkerStake(blackjackTest.getStake()); 
+        swingWorkerStake(blackjackTest.updateStake()); 
     }//GEN-LAST:event_playButtonActionPerformed
-
-                
-            
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(CapstoneCasinoBlackjackUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-        //</editor-fold>
-
-        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new CapstoneCasinoBlackjackUI().setVisible(true);
-//          }
-//        });
-//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backGroundGraphic;

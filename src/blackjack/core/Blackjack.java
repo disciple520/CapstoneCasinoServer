@@ -19,7 +19,6 @@ public class Blackjack {
     
     public int updateBet(int addedBet) {
         betTracker = addedBet + betTracker;
-        updateStake(addedBet);
         return betTracker;
     }
     public int resetBet() {
@@ -29,8 +28,10 @@ public class Blackjack {
     public int getBet() {
         return betTracker;
     }
-    private void updateStake(int stakeChange) {
-       stakeTracker =  stakeTracker - stakeChange;
+    public int updateStake() {
+       int tempBet = getBet();
+       stakeTracker =  stakeTracker - tempBet;
+       return stakeTracker;
     }
     public int getStake() {
         return stakeTracker;
