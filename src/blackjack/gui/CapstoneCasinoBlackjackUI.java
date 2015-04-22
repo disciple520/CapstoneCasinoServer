@@ -1,11 +1,13 @@
 package blackjack.gui;
 
+import blackjack.client.BlackjackClient;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import blackjack.server.BlackjackServer;
 import blackjack.core.Blackjack;
 
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.SwingWorker;
 
 
@@ -14,14 +16,17 @@ import javax.swing.SwingWorker;
  * @author Patrick
  */
 public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements ActionListener{
+    
+    BlackjackClient blackjackClient;
+    
     BlackjackServer blackjackServerTest = new BlackjackServer();
     Blackjack blackjackTest = new Blackjack();
 
-    
     /**
      * Creates new form CapstoneCasinoBlackjackUI
      */
-    public CapstoneCasinoBlackjackUI() {
+    public CapstoneCasinoBlackjackUI(BlackjackClient blackjackClient) {
+        this.blackjackClient = blackjackClient;
         initComponents();
     }
    
@@ -360,7 +365,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_standButtonClicked
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        swingWorkerStake(blackjackTest.updateStake()); 
+        swingWorkerStake(blackjackTest.updateStake());
+        blackjackClient.sendMessageToServer("PLAY");
     }//GEN-LAST:event_playButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -374,7 +380,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private javax.swing.JButton clearButton;
     private javax.swing.JButton doubleButton;
     private javax.swing.JButton hitButton;
-    private javax.swing.JButton playButton;
+    public javax.swing.JButton playButton;
     private javax.swing.JLabel player1Label;
     private javax.swing.JLabel player2Label;
     private javax.swing.JLabel player3Label;
