@@ -5,35 +5,33 @@
  */
 package blackjack.core;
 
+import blackjack.client.Session;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.ImageObserver;
+import java.awt.image.ImageProducer;
+
 /**
  *
  * @author Hellz
  */
 public class Blackjack {
+    private Shoe shoe = new Shoe();
+    private Hand hand;
+    
+
+    //need to pass in current player then uncomment
+    public void dealCards(Session.Player playerOne){
+                    Card c1 = shoe.draw();
+                    Card c2 = shoe.draw();
+                    startHand(c1, c2);
+                }
+    
+    public void startHand(Card c1, Card c2){
+        hand = new Hand(c1, c2);
+    }
+    public void payOut() {
         
-    int betTracker =0;
-    int stakeTracker = 1500;
-    
-    
-    
-    
-    public int updateBet(int addedBet) {
-        betTracker = addedBet + betTracker;
-        return betTracker;
     }
-    public int resetBet() {
-        betTracker = 0;
-        return betTracker;
-    }
-    public int getBet() {
-        return betTracker;
-    }
-    public int updateStake() {
-       int tempBet = getBet();
-       stakeTracker =  stakeTracker - tempBet;
-       return stakeTracker;
-    }
-    public int getStake() {
-        return stakeTracker;
-    }
+
 }

@@ -3,18 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/core/Card.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/practice/controller/BlackjackController.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/practice/view/BlackjackGui.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/core/Hand.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/core/Shoe.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/core/BlackjackController.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/practice/view/PlayerPanel.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/practice/view/ChoicesPanel.java</file>
+            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/client/BlackjackClient.java</file>
             <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/gui/CapstoneCasinoBlackjackUI.java</file>
             <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/core/Blackjack.java</file>
-            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/practice/view/DealerPanel.java</file>
+            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/gui/BetStakeUpdater.java</file>
             <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/server/BlackjackServer.java</file>
+            <file>file:/C:/Users/Hellz/Desktop/CVTC/CVTC%20sem%204/CapstoneCasinoServer/src/blackjack/client/Session.java</file>
         </group>
     </open-files>
 </project-private>
