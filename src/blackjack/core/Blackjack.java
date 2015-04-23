@@ -11,7 +11,7 @@ package blackjack.core;
  */
 public class Blackjack {
         
-    int betTracker = 0;
+    int betTracker =0;
     int stakeTracker = 1500;
     
     
