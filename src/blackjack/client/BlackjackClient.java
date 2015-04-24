@@ -51,7 +51,6 @@ public class BlackjackClient {
             
             @Override
             public void run() {
-                System.out.println("In run()");
                 gui.setVisible(true);
             }
             
@@ -107,34 +106,5 @@ public class BlackjackClient {
 
     public void sendBetToServer(int bet) {
         outputToServer.println(bet);
-    }
-    
-    
-/*        private void drawCard(Graphics g, Card card, int x, int y) {
-         int cx; // top-left x of cardsImage
-         int cy; // top-left y of cardsImage
-         boolean faceUp = true;
-         if (card.isFaceUp() != faceUp) {
-                 cx = 2*79;
-                 cy = 4*123;
-         }
-         else {
-            cx = (card.getRank())*79-79;
-            switch (card.getSuit()) {
-                    case Card.DIAMONDS: cy = 123;       break;
-                    case Card.CLUBS:    cy = 0;         break;              
-                    case Card.HEARTS:   cy = 2*123;     break;
-                    default:            cy = 3*123;     break; //Spades
-            }
-         }
-         g.drawImage(cardImages,x,y,x+79,y+123,cx,cy,cx+79,cy+123, (ImageObserver) this);
-        }
-    public void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                if (hand == null) return;
-                for (int i = 0; i < hand.getSizeOfHand(); i++) {
-                        drawCard(g, hand.getCardAtIndex(i), 10, 52 + 33*i);
-                }
-        }
-*/    
+    }   
 }

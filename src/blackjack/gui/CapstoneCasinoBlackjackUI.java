@@ -25,27 +25,37 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private Image cardImages;
     Card card;
     BlackjackClient blackjackClient;
-    BetStakeUpdater blackjackTest = new BetStakeUpdater();
+    BetStakeUpdater betStakeUpdate = new BetStakeUpdater();
     
     /**
      * Creates new form CapstoneCasinoBlackjackUI
      */
     public CapstoneCasinoBlackjackUI(BlackjackClient blackjackClient) {
         this.blackjackClient = blackjackClient;
-             PanelSetup();
+             PanelHolderSetup();
         initComponents();
    
     }
-   private void swingWorkerCardDraw() {
+
+    /**
+     *
+     * @param card
+     * @param cardHolder
+     */
+    public void swingWorkerCardDraw(Card card, CardHolder cardHolder) {
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             
             @Override
-            protected Void doInBackground() throws Exception {
+            protected Void doInBackground() throws Exception {               
                 return null;
                 
             }
             @Override
             protected void done() {
+                CardPanel newCard = new CardPanel(card);
+                cardHolder.add(newCard);
+                newCard.setLocation(cardHolder.getComponentCount()*20,0);
+                System.out.println(cardHolder.getComponentCount());
             }
 
 
@@ -90,12 +100,81 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
-    private void PanelSetup() {
-        Card aceOfSpades = new Card(3,1,true);
-        CardPanel testCardPanel = new CardPanel(aceOfSpades, PLAYER_1_CARD_1);
-        getContentPane().add(testCardPanel);
-        System.out.println(testCardPanel.getLocation().toString());
+    private void PanelHolderSetup() {
+        CardHolder CardHolderPlayer1 = new CardHolder();
+        CardHolderPlayer1.setLayout(null);
+        CardHolderPlayer1.setBounds(70 ,160 ,205 ,125);
         
+        CardHolder CardHolderPlayer2 = new CardHolder();
+        CardHolderPlayer2.setLayout(null);
+        CardHolderPlayer2.setBounds(300, 330,205 ,125);
+        
+        CardHolder CardHolderPlayer3 = new CardHolder();
+        CardHolderPlayer3.setLayout(null);
+        CardHolderPlayer3.setBounds(590,330,205,125);
+        
+        CardHolder CardHolderPlayer4 = new CardHolder();
+        CardHolderPlayer4.setLayout(null);
+        CardHolderPlayer4.setBounds(790,160,205,125);
+        
+        CardHolder CardHolderDealer = new CardHolder();
+        CardHolderDealer.setLayout(null);
+        CardHolderDealer.setBounds(400,100,205,125);
+        
+       
+        getContentPane().add(CardHolderPlayer1);
+        getContentPane().add(CardHolderPlayer2);
+        getContentPane().add(CardHolderPlayer3);
+        getContentPane().add(CardHolderPlayer4);
+        getContentPane().add(CardHolderDealer);
+    
+        
+        
+    //All this code is used for testing, but is set to be put and created from
+    // swingWorkerCardDraw(Card card, CardHolder cardHolder)
+        Card aceOfSpades = new Card(3,1,true);
+        Card playertest1 = new Card(3,2,true);
+        Card playertest2 = new Card(3,3,true);
+        Card playertest3 = new Card(3,4,true);
+        Card playertest4 = new Card(3,11,true);
+        
+        CardPanel testCardPanel = new CardPanel(aceOfSpades);
+        CardPanel player1testPanel = new CardPanel(playertest1);
+        CardPanel player2testPanel = new CardPanel(playertest2);
+        CardPanel player3testPanel = new CardPanel(playertest3);
+        CardPanel player4testPanel = new CardPanel(playertest4);
+        
+        CardHolderPlayer3.add(testCardPanel);
+        testCardPanel.setLocation(CardHolderPlayer3.getComponentCount()*20,0);
+        
+        CardHolderPlayer3.add(player1testPanel);
+        player1testPanel.setLocation(CardHolderPlayer3.getComponentCount()*20,0);
+        
+        CardHolderPlayer3.add(player2testPanel);
+        player2testPanel.setLocation(CardHolderPlayer3.getComponentCount()*20,0);
+        
+        CardHolderPlayer3.add(player3testPanel);
+        player3testPanel.setLocation(CardHolderPlayer3.getComponentCount()*20,0);
+        
+        CardHolderPlayer3.add(player4testPanel);
+        player4testPanel.setLocation(CardHolderPlayer3.getComponentCount()*20,0);
+        System.out.println(CardHolderPlayer3.getComponentCount());
+/*        
+        Card playertest2 = new Card(3,3,true);
+        Card playertest3 = new Card(3,4,true);
+        Card playertest4 = new Card(3,11,true);
+        CardPanel testCardPanel = new CardPanel(aceOfSpades);
+        CardPanel player1testPanel = new CardPanel(playertest1);
+        CardPanel player2testPanel = new CardPanel(playertest2);
+        CardPanel player3testPanel = new CardPanel(playertest3);
+        CardPanel player4testPanel = new CardPanel(playertest4);
+                
+        CardHolderPlayer4.add(player1testPanel);
+        CardHolderPlayer3.add(player2testPanel);
+        CardHolderPlayer2.add(player3testPanel);
+        CardHolderPlayer1.add(player4testPanel);
+        System.out.println(testCardPanel.getLocation().toString());
+*/        
         pack();
     }
     /**
@@ -355,31 +434,31 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
 
     private void hundredDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hundredDChipClick
         System.out.print("100 Dollar Chip Clicked!\n");
-        swingWorkerBet(blackjackTest.updateBet(100));
+        swingWorkerBet(betStakeUpdate.updateBet(100));
     }//GEN-LAST:event_hundredDChipClick
 
     private void oneDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneDChipClick
          System.out.print("One Dollar Chip Clicked!\n");
-         swingWorkerBet(blackjackTest.updateBet(1));
+         swingWorkerBet(betStakeUpdate.updateBet(1));
     }//GEN-LAST:event_oneDChipClick
 
     private void fiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiveDChipClick
         System.out.print("Five Dollar Chip Clicked!\n");
-        swingWorkerBet(blackjackTest.updateBet(5));
+        swingWorkerBet(betStakeUpdate.updateBet(5));
     }//GEN-LAST:event_fiveDChipClick
 
     private void twentyfiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twentyfiveDChipClick
         System.out.print("25 Dollar Chip Clicked!\n");
-        swingWorkerBet(blackjackTest.updateBet(25));
+        swingWorkerBet(betStakeUpdate.updateBet(25));
     }//GEN-LAST:event_twentyfiveDChipClick
 
     private void fiftyDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiftyDChipClick
         System.out.print("50 Dollar Chip Clicked!\n");
-        swingWorkerBet(blackjackTest.updateBet(50));
+        swingWorkerBet(betStakeUpdate.updateBet(50));
     }//GEN-LAST:event_fiftyDChipClick
 
     private void clearButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonClicked
-       swingWorkerBet(blackjackTest.resetBet());
+       swingWorkerBet(betStakeUpdate.resetBet());
     }//GEN-LAST:event_clearButtonClicked
 
     private void hitButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hitButtonClicked
@@ -395,7 +474,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_standButtonClicked
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
-        swingWorkerStake(blackjackTest.updateStake());
+        swingWorkerStake(betStakeUpdate.updateStake());
         blackjackClient.sendMessageToServer("PLAY");
     }//GEN-LAST:event_playButtonActionPerformed
 

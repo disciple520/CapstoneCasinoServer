@@ -23,11 +23,8 @@ public class CardPanel extends JPanel {
     
     private Card card;
     private static Image cardImages = null;
-    private int xCoor;
-    private int yCoor;
-    private int cardSpot;
     
-    public CardPanel(Card card, int cardSpot) {
+    public CardPanel(Card card) {
         super();
         if(cardImages == null){
             loadImages();
@@ -39,37 +36,11 @@ public class CardPanel extends JPanel {
         
         
         this.card = card;
-        this.cardSpot = 1;
-        determineCardPlacementCoordinates();
-       
-        
     }
-    
-    public void determineCardPlacementCoordinates(){
-        
-        switch (cardSpot) {
-            case 1:
-                xCoor = 100;
-                yCoor = 100;
-                break;
-            default:
-                break;
-                    
-        }
-    }
-    
-    
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        System.out.println("about to paint!");
-        g.setColor(Color.red);
-//        g.drawRect(00, 00, 99, 325);
-//        g.drawImage(cardImages, 0, 0,this.getWidth(),this.getHeight(), this);
-        drawCard(g);
-        
-       
-        
+        drawCard(g);   
     }
     /**
          * Paints a card image onto (x,y) of the container. A facedown card will
