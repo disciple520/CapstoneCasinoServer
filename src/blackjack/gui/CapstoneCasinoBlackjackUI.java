@@ -1,9 +1,11 @@
 package blackjack.gui;
 
 import blackjack.client.BlackjackClient;
+import blackjack.core.Card;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import blackjack.server.BlackjackServer;
+import java.awt.Image;
 
 import java.util.List;
 import javax.swing.JButton;
@@ -16,6 +18,12 @@ import javax.swing.SwingWorker;
  */
 public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements ActionListener{
     
+    private static final int PLAYER_1_CARD_1 = 1;
+    
+    
+    
+    private Image cardImages;
+    Card card;
     BlackjackClient blackjackClient;
     BetStakeUpdater blackjackTest = new BetStakeUpdater();
     
@@ -24,9 +32,26 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
      */
     public CapstoneCasinoBlackjackUI(BlackjackClient blackjackClient) {
         this.blackjackClient = blackjackClient;
+             PanelSetup();
         initComponents();
-    }
    
+    }
+   private void swingWorkerCardDraw() {
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+            
+            @Override
+            protected Void doInBackground() throws Exception {
+                return null;
+                
+            }
+            @Override
+            protected void done() {
+            }
+
+
+        };
+        worker.execute();
+    }
     private void swingWorkerBet(int value) {
         int passed = value;
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
@@ -64,6 +89,14 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
 
         };
         worker.execute();
+    }
+    private void PanelSetup() {
+        Card aceOfSpades = new Card(3,1,true);
+        CardPanel testCardPanel = new CardPanel(aceOfSpades, PLAYER_1_CARD_1);
+        getContentPane().add(testCardPanel);
+        System.out.println(testCardPanel.getLocation().toString());
+        
+        pack();
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -387,6 +420,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private javax.swing.JLabel timerLabel;
     // End of variables declaration//GEN-END:variables
 
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

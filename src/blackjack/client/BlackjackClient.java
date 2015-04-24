@@ -7,6 +7,7 @@ package blackjack.client;
 
 import blackjack.core.Card;
 import blackjack.gui.CapstoneCasinoBlackjackUI;
+import blackjack.gui.CardPanel;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -14,11 +15,13 @@ import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import practice.view.BlackjackGui;
 
 public class BlackjackClient {
 
@@ -27,7 +30,7 @@ public class BlackjackClient {
     private BufferedReader inputFromServer;
     private PrintWriter outputToServer;
     private CapstoneCasinoBlackjackUI gui;
-    public Image cardImages;
+    private Image cardImages;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -38,19 +41,23 @@ public class BlackjackClient {
         socket = new Socket(serverAddress, PORT);
         inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         outputToServer = new PrintWriter(socket.getOutputStream(), true);
+        System.out.println("In client constructor");
+      
 
         // Layout GUI
         gui = new CapstoneCasinoBlackjackUI(this);
         
         SwingUtilities.invokeLater(new Runnable() {
-
+            
             @Override
             public void run() {
+                System.out.println("In run()");
                 gui.setVisible(true);
             }
             
         });
     }
+
     /**
      * The main thread of the client will listen for messages
      * from the server. 
@@ -101,15 +108,8 @@ public class BlackjackClient {
     public void sendBetToServer(int bet) {
         outputToServer.println(bet);
     }
-    public void loadImages() {
-                    URL imageURL = BlackjackGui.class.getResource("cards.png");
-                    if (imageURL != null)
-                         cardImages = Toolkit.getDefaultToolkit().createImage(imageURL);
-                    else {
-                         String errorMsg = "Card image file loading failed.";
-                         System.exit(1);
-                    }                   
-                }
+    
+    
 /*        private void drawCard(Graphics g, Card card, int x, int y) {
          int cx; // top-left x of cardsImage
          int cy; // top-left y of cardsImage

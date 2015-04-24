@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import blackjack.core.Blackjack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
     /**
      * The class for the helper threads in this multithreaded server
@@ -55,12 +57,21 @@ public class Session {
                 }
                 // Repeatedly get commands from the client and processes them.
                 while (true) {
-                    String command = inputFromClient.readLine();
-                    System.out.println("This just in: " + command);
-                    if (command.equals("PLAY")) {                        
-                        activeTurn = true;
-                        System.out.println("command = PLAY from Player " + playerNumber);
+                    if (inputFromClient.ready()) {
+                        String command = inputFromClient.readLine();
+                        System.out.println("This just in: " + command);
+                        if (command != null && command.equals("PLAY")) {                        
+                            activeTurn = true;
+                            System.out.println("command = PLAY from Player " + playerNumber);
+                        }
+                    } else {
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(Session.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
+                    
                 }
             } catch (IOException e) {
                 System.out.println("Player died: " + e);
