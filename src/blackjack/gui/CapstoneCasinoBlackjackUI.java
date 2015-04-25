@@ -73,7 +73,6 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
                 CardPanel newCard = new CardPanel(card);
                 currentHolder.add(newCard);
                 newCard.setLocation(currentHolder.getComponentCount()*20,0);
-                System.out.println("Now " + currentHolder.getComponentCount() + " card(s) in this holder");
             }
 
 
@@ -111,7 +110,6 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
             }
             @Override
             protected void done() {
-                System.out.println("You have finished the swing worker for betting");
                 betLabel.setText(Integer.toString(passed));
             }
 
@@ -130,7 +128,6 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
             }
             @Override
             protected void done() {
-                System.out.println("You have finished the swing worker for stake update");
                 stakeLabel.setText(Integer.toString(stake));
             }
 
@@ -480,27 +477,22 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }// </editor-fold>//GEN-END:initComponents
 
     private void hundredDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hundredDChipClick
-        System.out.print("100 Dollar Chip Clicked!\n");
         swingWorkerBet(betStakeUpdater.updateBet(100));
     }//GEN-LAST:event_hundredDChipClick
 
     private void oneDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oneDChipClick
-         System.out.print("One Dollar Chip Clicked!\n");
          swingWorkerBet(betStakeUpdater.updateBet(1));
     }//GEN-LAST:event_oneDChipClick
 
     private void fiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiveDChipClick
-        System.out.print("Five Dollar Chip Clicked!\n");
         swingWorkerBet(betStakeUpdater.updateBet(5));
     }//GEN-LAST:event_fiveDChipClick
 
     private void twentyfiveDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_twentyfiveDChipClick
-        System.out.print("25 Dollar Chip Clicked!\n");
         swingWorkerBet(betStakeUpdater.updateBet(25));
     }//GEN-LAST:event_twentyfiveDChipClick
 
     private void fiftyDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiftyDChipClick
-        System.out.print("50 Dollar Chip Clicked!\n");
         swingWorkerBet(betStakeUpdater.updateBet(50));
     }//GEN-LAST:event_fiftyDChipClick
 

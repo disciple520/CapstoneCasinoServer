@@ -58,7 +58,7 @@ public class Card {
         else if(rank > TEN)
             return 10;
         else
-        	return 1;
+        	return 11;
     }
     
     public boolean isAce() {

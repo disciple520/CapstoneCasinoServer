@@ -9,6 +9,14 @@ public class Hand {
 
     private ArrayList<Card> hand = new ArrayList<Card>();
     
+    public Hand(){
+        
+    }
+    
+    public Hand(Card card1) {
+        hand.add(card1);
+    }
+    
     public Hand(Card card1, Card card2){
         hand.add(card1);
         hand.add(card2);
@@ -36,13 +44,43 @@ public class Hand {
     	return false;
     }
     
+    public int numberOfAces() {
+        int aceCount = 0;
+        for(Card card: hand) {
+        	if (card.isAce()) {
+                    aceCount++;
+        	}
+        }
+    	return aceCount;
+    }
+    
     public int getValue() {
         int handValue = 0;
         for(Card card: hand) {
-        	System.out.print("Card rank is " + card.getRank() + "\n");
         	handValue += card.getValue();
         }
         System.out.print("Final hand Value is " + handValue + "\n");
+        if (handValue > 21) {
+            if (containsAce()){
+                handValue -= 10;
+                if (handValue > 21) {
+                    if (numberOfAces() > 1) {
+                        handValue -= 10;
+                        if (handValue > 21) {
+                            if (numberOfAces() > 2) {
+                                handValue -= 10;
+                                if (handValue > 21) {
+                                    if (numberOfAces() > 3) {
+                                        handValue -= 10;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+                                
         return handValue;
     }
     
@@ -53,11 +91,13 @@ public class Hand {
     public boolean isBlackjack(){
         boolean handHasAce = false;
         boolean handHasTen = false;
-        for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
-                if (hand.get(i).getRank() == Card.ACE) // Can't use containsAce() because Ace must be in first two cards for Blackjack
-                        handHasAce = true;
-                if (hand.get(i).getValue() == 10)
-                        handHasTen = true;
+        if (hand.size()>1) {
+            for (int i = 0; i < INITIAL_HAND_SIZE; i++) {
+                    if (hand.get(i).getRank() == Card.ACE) // Can't use containsAce() because Ace must be in first two cards for Blackjack
+                            handHasAce = true;
+                    if (hand.get(i).getValue() == 10)
+                            handHasTen = true;
+            }
         }
         return handHasAce && handHasTen;
     }

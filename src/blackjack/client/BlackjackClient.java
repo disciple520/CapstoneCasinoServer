@@ -6,6 +6,7 @@
 package blackjack.client;
 
 import blackjack.core.Card;
+import blackjack.core.Hand;
 import blackjack.gui.CapstoneCasinoBlackjackUI;
 import java.awt.Image;
 import java.io.BufferedReader;
@@ -23,8 +24,9 @@ public class BlackjackClient {
     private CapstoneCasinoBlackjackUI gui;
     private Image cardImages;
     private Card card;
-    int handValue;
-    int dealersHandValue;
+    int playerNumber;
+    Hand hand;
+    Hand dealersHand;
     int stake;
     int bet;
 
@@ -33,6 +35,10 @@ public class BlackjackClient {
      */
     public BlackjackClient(String serverAddress) throws Exception {
 
+        hand = new Hand();
+        dealersHand = new Hand();
+        
+        
         // Setup networking
         socket = new Socket(serverAddress, PORT);
         inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -67,12 +73,13 @@ public class BlackjackClient {
                 if (inputFromServer.ready()) {
                     response = inputFromServer.readLine();
                     System.out.println("This just in: " + response);
-
-                    if (response.equals("DEAL")) {
-                       System.out.println("response = DEAL");
+                    if (response.startsWith("SET_PLAYER_")) {
+                        playerNumber = Integer.parseInt(response.substring(11));
+                        System.out.println("playerNumber set to " + playerNumber);
+                    }
+                    else if (response.equals("DEAL")) {
                        gui.playButton.setEnabled(false);
                        gui.clearButton.setEnabled(false);
-                       dealersHandValue = 0;
                        gui.clearCardHolderPanels();
                     } 
                     else if(response.equals("HANDS_DEALT")){
@@ -105,9 +112,17 @@ public class BlackjackClient {
                         int placement = Integer.parseInt(parameters[5]);
                         card = new Card(rank, suit);
                         gui.swingWorkerCardDraw(card, placement);
+                        if (placement == playerNumber) {
+                            hand.addCard(card);
+                            sendMessageToServer("PLAYER" + playerNumber + "_HAND_VALUE_IS_" + hand.getValue());
+                        }
                         if (placement == 5) {
-                            System.out.println("Dealer's hand value is " + (dealersHandValue+=card.getValue()));
-                            sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHandValue);
+                            dealersHand.addCard(card);
+                            sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHand.getValue());
+                            if (dealersHand.isBlackjack()) {
+                                sendMessageToServer("BLACKJACK_FOR_DEALER");
+                            }
+                                
                         }
                     } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH")) {
                         bet = gui.betStakeUpdater.getBet();
@@ -120,7 +135,8 @@ public class BlackjackClient {
                         gui.betStakeUpdater.setStake(stake);
                         gui.betStakeUpdater.setBet(0);
                         gui.updateBetAndStake();
-                        dealersHandValue = 0;
+                        hand.clearHand();
+                        dealersHand.clearHand();
                     }
                 }
                }
@@ -144,7 +160,7 @@ public class BlackjackClient {
     }
 
     public void sendMessageToServer(String messageFromGui) {
-        System.out.println("sendMessageToServer Fired! (" + messageFromGui + ")");
+        //System.out.println("sendMessageToServer Fired! (" + messageFromGui + ")");
         outputToServer.println(messageFromGui);
     }
 }

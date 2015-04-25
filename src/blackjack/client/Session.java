@@ -39,6 +39,7 @@ public class Session {
         boolean activeTurn = false;
         public boolean isReadyForDeal;
         public boolean busted;
+        public boolean dealerHasBlackjack;
         public Hand hand;
         public int bet;
         public int action;
@@ -73,6 +74,7 @@ public class Session {
                     System.out.println("Player 1 goes first");
                     currentPlayer = PLAYER_ONE;
                 }
+                outputToClient.println("SET_PLAYER_" + playerNumber);
                 
                 // Repeatedly get commands from the client and processes them.
                 while (true) {
@@ -81,7 +83,7 @@ public class Session {
                         System.out.println("This just in: " + command);
                         if (command != null && command.startsWith("PLAY_FOR_")) {
                             bet = Integer.parseInt(command.substring(9));
-                            outputToClient.println("DISABLE_PLAY_AND_CLEAR");
+                            outputToClient.println("DEAL");
                             isReadyForDeal = true;
                             System.out.println("command = PLAY from Player " + playerNumber + " for $" + bet);
                         }
@@ -95,6 +97,12 @@ public class Session {
                         }
                         else if (command.startsWith("DEALERS_HAND_VALUE_IS_")) {
                             dealersHandValue = Integer.parseInt(command.substring(22));
+                        }
+                        else if (command.startsWith("PLAYER")) {
+                            handValue = Integer.parseInt(command.substring(22));
+                        }
+                        else if (command.equals("BLACKJACK_FOR_DEALER")) {
+                            dealerHasBlackjack = true;
                         }
                     } else {
                         try {
