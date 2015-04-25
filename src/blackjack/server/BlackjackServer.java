@@ -11,6 +11,7 @@ import java.util.Random;
 
 public class BlackjackServer {
 
+    private static final int NO_PLAYER = 1;
     private static final int PLAYER_ONE = 1;
     private static final int PLAYER_TWO = 2;
     private static final int PLAYER_THREE = 3;
@@ -57,6 +58,7 @@ public class BlackjackServer {
                     Thread.sleep(250);
                     System.out.print("wait  ");
                     playerOne.setActive(true);
+                    System.out.println("The Server things that PlayerOne is ready for deal: " + playerOne.isReadyForDeal);
                     if (playerOne.isReadyForDeal == true) {
                         sendHandsToClients();
                         playerOne.isReadyForDeal = false;
@@ -76,7 +78,7 @@ public class BlackjackServer {
                         }
                         while (currentPlayer == DEALER) {
                             Thread.sleep(2000);
-                            playerOne.dealersHandValue = dealersHandValue;
+                            dealersHandValue = playerOne.dealersHandValue;
                             System.out.println("The server thinks the dealer has " + dealersHandValue);
                             if (dealersHandValue <=17) {
                                 System.out.println("Dealer hits");
@@ -84,8 +86,14 @@ public class BlackjackServer {
                             } 
                             else {
                                 System.out.println("Dealer stands with " + dealersHandValue);
+                                currentPlayer = NO_PLAYER;
                             }
                         }
+                        payOrTakeBets(dealersHandValue);
+                        playerOne.dealersHandValue = 0;
+                        dealersHandValue = 0;
+                        playerOne.sendMessageToClient("ENABLE_PLAY_AND_CLEAR");
+                        playerOne.sendMessageToClient("DISABLE_ACTION_BUTTONS");
                     }
 //                    if (currentPlayer == 1 && playerOne.activeTurn()) {
 //                        currentPlayer++;
@@ -127,12 +135,28 @@ public class BlackjackServer {
     }
     
     private static void sendHandsToClients() {
-        
         playerOne.sendMessageToClient("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + rand.nextInt(4) + "_TO" + "_1");
         playerOne.sendMessageToClient("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + rand.nextInt(4) + "_TO" + "_1");
         playerOne.sendMessageToClient("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + rand.nextInt(4) + "_TO" + "_5");
         playerOne.sendMessageToClient("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + rand.nextInt(4) + "_TO" + "_5");
         playerOne.sendMessageToClient("HANDS_DEALT");
+    }
+    
+    private static void payOrTakeBets(int dealersHandValue) {
+        if (dealersHandValue >=22) {
+            System.out.println("Dealer busted!");
+            if (playerOne.busted == false) {
+                playerOne.sendMessageToClient("PAY");
+            } else {
+                playerOne.sendMessageToClient("TAKE");
+            }
+        } else if (playerOne.handValue > dealersHandValue) {
+                playerOne.sendMessageToClient("PAY");
+            } else if (playerOne.handValue < dealersHandValue) {
+                playerOne.sendMessageToClient("TAKE");
+            } else {
+                playerOne.sendMessageToClient("PUSH");
+            }
     }
 }
 

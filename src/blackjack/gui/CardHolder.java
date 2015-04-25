@@ -37,8 +37,8 @@ public class CardHolder extends JPanel {
 //        setPreferredSize(new Dimension(300, 123));
 //        setSize(getPreferredSize());
 //        setMinimumSize(getPreferredSize());
-        g.setColor(Color.red);
-        g.drawRect(0, 0, 200, 124);
+//        g.setColor(Color.red);
+//        g.drawRect(0, 0, 200, 124);
 //        setOpaque(false);
 //        
     }

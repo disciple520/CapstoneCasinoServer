@@ -23,7 +23,10 @@ public class BlackjackClient {
     private CapstoneCasinoBlackjackUI gui;
     private Image cardImages;
     private Card card;
+    int handValue;
     int dealersHandValue;
+    int stake;
+    int bet;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -70,6 +73,7 @@ public class BlackjackClient {
                        gui.playButton.setEnabled(false);
                        gui.clearButton.setEnabled(false);
                        dealersHandValue = 0;
+                       gui.clearCardHolderPanels();
                     } 
                     else if(response.equals("HANDS_DEALT")){
                         gui.hitButton.setEnabled(true);
@@ -84,6 +88,16 @@ public class BlackjackClient {
                         gui.playButton.setEnabled(false); 
                         gui.clearButton.setEnabled(false);
                     }
+                    else if(response.equals("DISABLE_ACTION_BUTTONS")) {
+                        gui.hitButton.setEnabled(false);
+                        gui.standButton.setEnabled(false);
+                        gui.doubleButton.setEnabled(false);
+                    }
+                    else if(response.equals("ENABLE_ACTION_BUTTONS")) {
+                        gui.hitButton.setEnabled(true);
+                        gui.standButton.setEnabled(true);
+                        gui.doubleButton.setEnabled(true);
+                    }
                     else if(response.startsWith("DEALING_")){
                         String[] parameters = response.split("_");
                         int rank = Integer.parseInt(parameters[1]);
@@ -95,8 +109,18 @@ public class BlackjackClient {
                             System.out.println("Dealer's hand value is " + (dealersHandValue+=card.getValue()));
                             sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHandValue);
                         }
-
-
+                    } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH")) {
+                        bet = gui.betStakeUpdater.getBet();
+                        stake = gui.betStakeUpdater.getStake();
+                        if (response.equals("PAY")) {
+                            stake += (2 * bet);
+                        } else if (response.equals("PUSH")) {
+                            stake += bet;
+                        }
+                        gui.betStakeUpdater.setStake(stake);
+                        gui.betStakeUpdater.setBet(0);
+                        gui.updateBetAndStake();
+                        dealersHandValue = 0;
                     }
                 }
                }

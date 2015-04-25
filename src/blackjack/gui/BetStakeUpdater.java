@@ -36,4 +36,10 @@ public class BetStakeUpdater {
     public int getStake() {
         return stakeTracker;
     }
+    public void setStake(int stake) {
+        stakeTracker = stake;
+    }
+    public void setBet(int bet) {
+        betTracker = bet;
+    }
 }

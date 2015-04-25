@@ -22,10 +22,15 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private Image cardImages;
     Card card;
     BlackjackClient client;
-    BetStakeUpdater betStakeUpdater = new BetStakeUpdater();
+    public BetStakeUpdater betStakeUpdater = new BetStakeUpdater();
     CardHolder currentHolder;
     CardHolder cardHolderPlayer1;
+    CardHolder cardHolderPlayer2;
+    CardHolder cardHolderPlayer3;
+    CardHolder cardHolderPlayer4;
     CardHolder cardHolderDealer;
+    
+    CardHolder ghostCardHolder;
     
     /**
      * Creates new form CapstoneCasinoBlackjackUI
@@ -58,6 +63,12 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
                         break;
                     case 5:
                         currentHolder = cardHolderDealer;
+                        break;
+//                    case 6:
+//                        currentHolder = cardHolderTest;
+//                        break;
+                    default: 
+                        System.out.println("Problem drawing card");
                 }
                 CardPanel newCard = new CardPanel(card);
                 currentHolder.add(newCard);
@@ -69,6 +80,26 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    
+    public void updateBetAndStake() {
+        swingWorkerBet(betStakeUpdater.getBet());
+        swingWorkerStake(betStakeUpdater.getStake());
+    }
+    
+    public void clearCardHolderPanels(){
+        cardHolderPlayer1.removeAll();
+        cardHolderPlayer1.repaint();
+        cardHolderPlayer2.removeAll();
+        cardHolderPlayer2.repaint();
+        cardHolderPlayer3.removeAll();
+        cardHolderPlayer3.repaint();
+        cardHolderPlayer4.removeAll();
+        cardHolderPlayer4.repaint();
+        cardHolderDealer.removeAll();
+        cardHolderDealer.repaint();
+        
+    }
+    
     private void swingWorkerBet(int value) {
         int passed = value;
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
@@ -88,8 +119,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
-    private void swingWorkerStake(int value) {
-        int passed = value;
+    private void swingWorkerStake(int stake) {
+        //int passed = value;
         SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
             
             @Override
@@ -100,7 +131,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
             @Override
             protected void done() {
                 System.out.println("You have finished the swing worker for stake update");
-                stakeLabel.setText(Integer.toString(passed));
+                stakeLabel.setText(Integer.toString(stake));
             }
 
 
@@ -108,15 +139,15 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         worker.execute();
     }
     private void PanelHolderSetup() {
-        CardHolder cardHolderPlayer4 = new CardHolder();
+        cardHolderPlayer4 = new CardHolder();
         cardHolderPlayer4.setLayout(null);
         cardHolderPlayer4.setBounds(70 ,160 ,205 ,125);
         
-        CardHolder cardHolderPlayer3 = new CardHolder();
+        cardHolderPlayer3 = new CardHolder();
         cardHolderPlayer3.setLayout(null);
         cardHolderPlayer3.setBounds(300, 330,205 ,125);
         
-        CardHolder cardHolderPlayer2 = new CardHolder();
+        cardHolderPlayer2 = new CardHolder();
         cardHolderPlayer2.setLayout(null);
         cardHolderPlayer2.setBounds(590,330,205,125);
         
@@ -128,14 +159,19 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         cardHolderDealer.setLayout(null);
         cardHolderDealer.setBounds(400,100,205,125);
         
+        ghostCardHolder = new CardHolder();
+        ghostCardHolder.setLayout(null);
+        ghostCardHolder.setBounds(0, 0, 100, 205);
+        
        
         getContentPane().add(cardHolderPlayer4);
         getContentPane().add(cardHolderPlayer3);
         getContentPane().add(cardHolderPlayer2);
         getContentPane().add(cardHolderPlayer1);
         getContentPane().add(cardHolderDealer);
+        getContentPane().add(ghostCardHolder); // because for some reason the last thing added to the content pane won't show up. 
         
-        //swingWorkerCardDraw(new Card(1,3), 5);
+        //swingWorkerCardDraw(new Card(1,3), 6);
     
         
         

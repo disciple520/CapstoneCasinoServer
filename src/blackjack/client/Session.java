@@ -16,6 +16,13 @@ import java.util.logging.Logger;
      */
 public class Session {
     
+    private static final int NO_PLAYER = 1;
+    private static final int PLAYER_ONE = 1;
+    private static final int PLAYER_TWO = 2;
+    private static final int PLAYER_THREE = 3;
+    private static final int PLAYER_FOUR = 4;
+    private static final int DEALER = 5;
+    
     public static final int NO_ACTION = 0;
     public static final int HIT = 1;
     public static final int STAND = 2;
@@ -31,9 +38,11 @@ public class Session {
         int currentPlayer;
         boolean activeTurn = false;
         public boolean isReadyForDeal;
+        public boolean busted;
         public Hand hand;
         public int bet;
         public int action;
+        public int handValue;
         public int dealersHandValue;
      
 
@@ -62,7 +71,7 @@ public class Session {
                 outputToClient.println("Connected to Server");
                 if(playerNumber == 1){
                     System.out.println("Player 1 goes first");
-                    currentPlayer = 1;
+                    currentPlayer = PLAYER_ONE;
                 }
                 
                 // Repeatedly get commands from the client and processes them.
@@ -77,6 +86,7 @@ public class Session {
                             System.out.println("command = PLAY from Player " + playerNumber + " for $" + bet);
                         }
                         else if (command.equals("HIT")) {
+                            System.out.println("Action being set to HIT");
                             action = HIT;
                         }
                         else if (command.equals("STAND")) {
@@ -84,7 +94,7 @@ public class Session {
                             System.out.println("Action being set to STAND");
                         }
                         else if (command.startsWith("DEALERS_HAND_VALUE_IS_")) {
-                            dealersHandValue += Integer.parseInt(command.substring(23));
+                            dealersHandValue = Integer.parseInt(command.substring(22));
                         }
                     } else {
                         try {
