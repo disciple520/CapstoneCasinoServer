@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import blackjack.core.Blackjack;
+import blackjack.core.Hand;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,7 +15,13 @@ import java.util.logging.Logger;
      * application. 
      */
 public class Session {
+    
+    public static final int NO_ACTION = 0;
+    public static final int HIT = 1;
+    public static final int STAND = 2;
+    public static final int DOUBLE = 3;
     Session currentPlayer;
+    
 
     public class Player extends Thread {
         Socket socket;
@@ -23,6 +30,12 @@ public class Session {
         int playerNumber;
         int currentPlayer;
         boolean activeTurn = false;
+        public boolean isReadyForDeal;
+        public Hand hand;
+        public int bet;
+        public int action;
+        public int dealersHandValue;
+     
 
         /**
          * Constructs a handler thread for a given socket and mark
@@ -51,18 +64,27 @@ public class Session {
                     System.out.println("Player 1 goes first");
                     currentPlayer = 1;
                 }
-                else {
-                    outputToClient.println("NOTURN");
-                    activeTurn = false;                    
-                }
+                
                 // Repeatedly get commands from the client and processes them.
                 while (true) {
                     if (inputFromClient.ready()) {
                         String command = inputFromClient.readLine();
                         System.out.println("This just in: " + command);
-                        if (command != null && command.equals("PLAY")) {                        
-                            activeTurn = true;
-                            System.out.println("command = PLAY from Player " + playerNumber);
+                        if (command != null && command.startsWith("PLAY_FOR_")) {
+                            bet = Integer.parseInt(command.substring(9));
+                            outputToClient.println("DISABLE_PLAY_AND_CLEAR");
+                            isReadyForDeal = true;
+                            System.out.println("command = PLAY from Player " + playerNumber + " for $" + bet);
+                        }
+                        else if (command.equals("HIT")) {
+                            action = HIT;
+                        }
+                        else if (command.equals("STAND")) {
+                            action = STAND;
+                            System.out.println("Action being set to STAND");
+                        }
+                        else if (command.startsWith("DEALERS_HAND_VALUE_IS_")) {
+                            dealersHandValue += Integer.parseInt(command.substring(23));
                         }
                     } else {
                         try {

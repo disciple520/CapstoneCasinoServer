@@ -7,30 +7,23 @@ package blackjack.client;
 
 import blackjack.core.Card;
 import blackjack.gui.CapstoneCasinoBlackjackUI;
-import blackjack.gui.CardPanel;
-import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.image.ImageObserver;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class BlackjackClient {
 
-    private static int PORT = 12345;
-    private Socket socket;
-    private BufferedReader inputFromServer;
-    private PrintWriter outputToServer;
+    private static final int PORT = 12345;
+    private final Socket socket;
+    private final BufferedReader inputFromServer;
+    private final PrintWriter outputToServer;
     private CapstoneCasinoBlackjackUI gui;
     private Image cardImages;
+    private Card card;
+    int dealersHandValue;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -68,21 +61,48 @@ public class BlackjackClient {
             welcomeMsg = inputFromServer.readLine();
             System.out.println(welcomeMsg);
             while (true) {
-                response = inputFromServer.readLine();
-                System.out.println("This just in: " + response);
-                if (response.equals("DEAL")) {
-                   System.out.println("response = DEAL");
-                   gui.playButton.setEnabled(false);
+                if (inputFromServer.ready()) {
+                    response = inputFromServer.readLine();
+                    System.out.println("This just in: " + response);
+
+                    if (response.equals("DEAL")) {
+                       System.out.println("response = DEAL");
+                       gui.playButton.setEnabled(false);
+                       gui.clearButton.setEnabled(false);
+                       dealersHandValue = 0;
+                    } 
+                    else if(response.equals("HANDS_DEALT")){
+                        gui.hitButton.setEnabled(true);
+                        gui.standButton.setEnabled(true);
+                        gui.doubleButton.setEnabled(true);
+                    }
+                    else if(response.equals("ENABLE_PLAY_AND_CLEAR")){
+                        gui.playButton.setEnabled(true);
+                        gui.clearButton.setEnabled(true);
+                    } 
+                    else if(response.equals("DISABLE_PLAY_AND_CLEAR")){
+                        gui.playButton.setEnabled(false); 
+                        gui.clearButton.setEnabled(false);
+                    }
+                    else if(response.startsWith("DEALING_")){
+                        String[] parameters = response.split("_");
+                        int rank = Integer.parseInt(parameters[1]);
+                        int suit = Integer.parseInt(parameters[3]);
+                        int placement = Integer.parseInt(parameters[5]);
+                        card = new Card(rank, suit);
+                        gui.swingWorkerCardDraw(card, placement);
+                        if (placement == 5) {
+                            System.out.println("Dealer's hand value is " + (dealersHandValue+=card.getValue()));
+                            sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHandValue);
+                        }
+
+
+                    }
                 }
-                if (response.equals("NOTURN")) {
-                   gui.playButton.setEnabled(false); 
-                }
-                if(response.equals("ENABLE")){
-                    gui.playButton.setEnabled(true);
-                }
+               }
          
             }
-        }
+        
         finally {
             socket.close();
         }
@@ -103,8 +123,4 @@ public class BlackjackClient {
         System.out.println("sendMessageToServer Fired! (" + messageFromGui + ")");
         outputToServer.println(messageFromGui);
     }
-
-    public void sendBetToServer(int bet) {
-        outputToServer.println(bet);
-    }   
 }

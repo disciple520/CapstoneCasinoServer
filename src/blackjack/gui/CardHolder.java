@@ -20,21 +20,26 @@ public class CardHolder extends JPanel {
     private int xCoor;
     private int yCoor;
     
+    public CardHolder() {
+        setOpaque(false);
+    }
+    
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
         drawCardHolder(g);
         
        
         
     }
+    //No longer used
     private void drawCardHolder(Graphics g) {
-        //setPreferredSize(new Dimension(300, 123));
-        //setSize(getPreferredSize());
-        //setMinimumSize(getPreferredSize());
+//        setPreferredSize(new Dimension(300, 123));
+//        setSize(getPreferredSize());
+//        setMinimumSize(getPreferredSize());
         g.setColor(Color.red);
         g.drawRect(0, 0, 200, 124);
-        setOpaque(false);
-        
+//        setOpaque(false);
+//        
     }
 }

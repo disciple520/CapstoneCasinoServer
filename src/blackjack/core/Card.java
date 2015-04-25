@@ -32,13 +32,13 @@ public class Card {
     private int rank;
     private boolean isFaceUp;
 
-    public Card(int suit, int rank, boolean isCardFaceUp){
+    public Card(int rank, int suit, boolean isCardFaceUp){
         this.suit = suit;
         this.rank = rank;
         this.isFaceUp = isCardFaceUp;
     }
 
-    public Card(int suit, int rank){
+    public Card(int rank, int suit){
         this.suit = suit;
         this.rank = rank;
         isFaceUp = true;
