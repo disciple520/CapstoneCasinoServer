@@ -73,6 +73,7 @@ public class BlackjackClient {
                 if (inputFromServer.ready()) {
                     response = inputFromServer.readLine();
                     System.out.println("This just in: " + response);
+                    
                     if (response.startsWith("SET_PLAYER_")) {
                         playerNumber = Integer.parseInt(response.substring(11));
                         System.out.println("playerNumber set to " + playerNumber);
@@ -82,11 +83,6 @@ public class BlackjackClient {
                        gui.clearButton.setEnabled(false);
                        gui.clearCardHolderPanels();
                     } 
-                    else if(response.equals("HANDS_DEALT")){
-                        gui.hitButton.setEnabled(true);
-                        gui.standButton.setEnabled(true);
-                        gui.doubleButton.setEnabled(true);
-                    }
                     else if(response.equals("ENABLE_PLAY_AND_CLEAR")){
                         gui.playButton.setEnabled(true);
                         gui.clearButton.setEnabled(true);
@@ -105,7 +101,9 @@ public class BlackjackClient {
                         gui.standButton.setEnabled(true);
                         gui.doubleButton.setEnabled(true);
                     }
-                    else if(response.startsWith("DEALING_")){
+                    //This is a command of the form "DEALING_RANK_OF_SUIT_TO_PLAYER
+                    //i.e. "DEALING_11_OF_3_TO_5" means dealing jack of spades to dealer
+                    else if(response.startsWith("DEALING_")){ 
                         String[] parameters = response.split("_");
                         int rank = Integer.parseInt(parameters[1]);
                         int suit = Integer.parseInt(parameters[3]);
@@ -113,24 +111,38 @@ public class BlackjackClient {
                         card = new Card(rank, suit);
                         gui.swingWorkerCardDraw(card, placement);
                         if (placement == playerNumber) {
+                            System.out.println("Card being dealt to self");
                             hand.addCard(card);
-                            sendMessageToServer("PLAYER" + playerNumber + "_HAND_VALUE_IS_" + hand.getValue());
+                            if (hand.isBusted()) {
+                                sendMessageToServer("PLAYER_BUSTED");
+                            } else {
+                                sendMessageToServer("PLAYER" + playerNumber + "_HAND_VALUE_IS_" + hand.getValue());
+                            }
+                            if (hand.isBlackjack()) {
+                                sendMessageToServer("PLAYER_HAS_BLACKJACK");
+                            }
                         }
-                        if (placement == 5) {
+                        if (placement == 5) { // i.e. if card was dealt dealer instead of player
                             dealersHand.addCard(card);
                             sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHand.getValue());
                             if (dealersHand.isBlackjack()) {
                                 sendMessageToServer("BLACKJACK_FOR_DEALER");
+                            } else if (dealersHand.isBusted()) {
+                                sendMessageToServer("DEALER_BUSTED");
                             }
                                 
                         }
-                    } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH")) {
+                    } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH") || response.equals("3:2")) {
                         bet = gui.betStakeUpdater.getBet();
                         stake = gui.betStakeUpdater.getStake();
                         if (response.equals("PAY")) {
                             stake += (2 * bet);
                         } else if (response.equals("PUSH")) {
                             stake += bet;
+                        } else if (response.equals("3:2")) {
+                            stake += (2.5 * bet);
+                        } else if (response.equals("TAKE")) {
+                            // No action needed since we reduce their stake at play time
                         }
                         gui.betStakeUpdater.setStake(stake);
                         gui.betStakeUpdater.setBet(0);
@@ -160,7 +172,7 @@ public class BlackjackClient {
     }
 
     public void sendMessageToServer(String messageFromGui) {
-        //System.out.println("sendMessageToServer Fired! (" + messageFromGui + ")");
+        System.out.println("sending \"" + messageFromGui + "\"");
         outputToServer.println(messageFromGui);
     }
 }

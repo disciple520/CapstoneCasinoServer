@@ -59,9 +59,11 @@ public class Hand {
         for(Card card: hand) {
         	handValue += card.getValue();
         }
-        System.out.print("Final hand Value is " + handValue + "\n");
+        //System.out.println("Unadjusted hand value is " + handValue);
         if (handValue > 21) {
+            //System.out.println("Hand value is greater than 21, checking for an Ace");
             if (containsAce()){
+                //System.out.println("Hand contains an ace. Value being adjusted -10");
                 handValue -= 10;
                 if (handValue > 21) {
                     if (numberOfAces() > 1) {
@@ -78,6 +80,8 @@ public class Hand {
                         }
                     }
                 }
+            } else {
+                //System.out.println("No aces were found. Hand is busted.");
             }
         }
                                 

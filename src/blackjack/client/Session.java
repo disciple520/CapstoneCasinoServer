@@ -39,8 +39,9 @@ public class Session {
         boolean activeTurn = false;
         public boolean isReadyForDeal;
         public boolean busted;
+        public boolean dealerBusted;
+        public boolean hasBlackjack;
         public boolean dealerHasBlackjack;
-        public Hand hand;
         public int bet;
         public int action;
         public int handValue;
@@ -81,7 +82,8 @@ public class Session {
                     if (inputFromClient.ready()) {
                         String command = inputFromClient.readLine();
                         System.out.println("This just in: " + command);
-                        if (command != null && command.startsWith("PLAY_FOR_")) {
+                        
+                        if (command.startsWith("PLAY_FOR_")) {
                             bet = Integer.parseInt(command.substring(9));
                             outputToClient.println("DEAL");
                             isReadyForDeal = true;
@@ -98,8 +100,17 @@ public class Session {
                         else if (command.startsWith("DEALERS_HAND_VALUE_IS_")) {
                             dealersHandValue = Integer.parseInt(command.substring(22));
                         }
-                        else if (command.startsWith("PLAYER")) {
+                        else if (command.startsWith("PLAYER1_HAND_VALUE_IS_")) {
                             handValue = Integer.parseInt(command.substring(22));
+                        }
+                        else if (command.equals("PLAYER_BUSTED")){
+                            busted = true;
+                        }
+                        else if (command.equals("DEALER_BUSTED")) {
+                            dealerBusted = true;
+                        }
+                        else if (command.equals("PLAYER_HAS_BLACKJACK")) {
+                            hasBlackjack = true;
                         }
                         else if (command.equals("BLACKJACK_FOR_DEALER")) {
                             dealerHasBlackjack = true;
@@ -126,13 +137,9 @@ public class Session {
         public void setActive(boolean b){
             activeTurn = b;
         }
-        public void enableButton(){
-            outputToClient.println("ENABLE");
-        }
-                
         
         public void sendMessageToClient(String messageToClient) {
-            System.out.println("sendMessageToClient Fired! (" + messageToClient + ")");
+            System.out.println("sending \"" + messageToClient + "\"");
             outputToClient.println(messageToClient);
         }
     }
