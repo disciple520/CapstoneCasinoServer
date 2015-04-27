@@ -61,6 +61,16 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
                     case 1:
                         currentHolder = cardHolderPlayer1;
                         break;
+                    case 2:
+                        currentHolder = cardHolderPlayer2;
+                        break;
+                    case 3:
+                        currentHolder = cardHolderPlayer3;
+                        break;
+                    case 4:
+                        currentHolder = cardHolderPlayer4;
+                        break;
+
                     case 5:
                         currentHolder = cardHolderDealer;
                         break;
@@ -513,6 +523,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_standButtonClicked
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
+        betStakeUpdater.nonZeroBet();
+        swingWorkerBet(betStakeUpdater.updateBet(betStakeUpdater.getBet()));
         swingWorkerStake(betStakeUpdater.updateStake());
         client.sendMessageToServer("PLAY_FOR_" + betStakeUpdater.getBet());
     }//GEN-LAST:event_playButtonActionPerformed

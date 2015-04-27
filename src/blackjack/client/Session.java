@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import blackjack.core.Blackjack;
 import blackjack.core.Hand;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -73,7 +72,6 @@ public class Session {
                 outputToClient.println("Connected to Server");
                 if(playerNumber == 1){
                     System.out.println("Player 1 goes first");
-                    currentPlayer = PLAYER_ONE;
                 }
                 outputToClient.println("SET_PLAYER_" + playerNumber);
                 

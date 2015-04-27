@@ -26,20 +26,6 @@ public class CardHolder extends JPanel {
     
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        drawCardHolder(g);
-        
-       
-        
-    }
-    //No longer used
-    private void drawCardHolder(Graphics g) {
-//        setPreferredSize(new Dimension(300, 123));
-//        setSize(getPreferredSize());
-//        setMinimumSize(getPreferredSize());
-//        g.setColor(Color.red);
-//        g.drawRect(0, 0, 200, 124);
-//        setOpaque(false);
-//        
+        super.paintComponent(g);     
     }
 }

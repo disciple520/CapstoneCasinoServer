@@ -42,4 +42,11 @@ public class BetStakeUpdater {
     public void setBet(int bet) {
         betTracker = bet;
     }
+    public void nonZeroBet(){
+        if (getBet() ==0)
+        {
+            setBet(1);
+            System.out.println("Can't have 0 bet, defaulting to 1");
+        }
+    }
 }
