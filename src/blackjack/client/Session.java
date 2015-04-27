@@ -83,7 +83,9 @@ public class Session {
                         
                         if (command.startsWith("PLAY_FOR_")) {
                             bet = Integer.parseInt(command.substring(9));
-                            outputToClient.println("DEAL");
+                            //outputToClient.println("DEAL");
+                            outputToClient.println("DISABLE_PLAY_AND_CLEAR");
+                            //outputToClient.println("");
                             isReadyForDeal = true;
                             System.out.println("command = PLAY from Player " + playerNumber + " for $" + bet);
                         }
@@ -127,13 +129,6 @@ public class Session {
             } finally {
                 try {socket.close();} catch (IOException e) {}
             }
-        }
-       
-        public boolean activeTurn() {
-            return activeTurn;
-        }
-        public void setActive(boolean b){
-            activeTurn = b;
         }
         
         public void sendMessageToClient(String messageToClient) {

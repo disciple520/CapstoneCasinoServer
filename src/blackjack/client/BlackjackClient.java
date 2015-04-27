@@ -24,7 +24,7 @@ public class BlackjackClient {
     private CapstoneCasinoBlackjackUI gui;
     private Image cardImages;
     private Card card;
-    int playerNumber;
+    public int playerNumber;
     Hand hand;
     Hand dealersHand;
     int stake;
@@ -48,7 +48,7 @@ public class BlackjackClient {
 
         // Layout GUI
         gui = new CapstoneCasinoBlackjackUI(this);
-        
+        gui.setLocation(200, 50);
         SwingUtilities.invokeLater(new Runnable() {
             
             @Override
@@ -79,8 +79,6 @@ public class BlackjackClient {
                         System.out.println("playerNumber set to " + playerNumber);
                     }
                     else if (response.equals("DEAL")) {
-                       gui.playButton.setEnabled(false);
-                       gui.clearButton.setEnabled(false);
                        gui.clearCardHolderPanels();
                     } 
                     else if(response.equals("ENABLE_PLAY_AND_CLEAR")){

@@ -177,58 +177,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         getContentPane().add(cardHolderPlayer1);
         getContentPane().add(cardHolderDealer);
         getContentPane().add(ghostCardHolder); // because for some reason the last thing added to the content pane won't show up. 
-        
-        //swingWorkerCardDraw(new Card(1,3), 6);
-    
-        
-        
-    //All this code is used for testing, but is set to be put and created from
-    // swingWorkerCardDraw(Card card, CardHolder cardHolder)
-//        Card aceOfSpades = new Card(3,1,true);
-//        Card playertest1 = new Card(3,2,true);
-//        Card playertest2 = new Card(3,3,true);
-//        Card playertest3 = new Card(3,4,true);
-//        Card playertest4 = new Card(3,11,true);
-//        
-//        CardPanel testCardPanel = new CardPanel(aceOfSpades);
-//        CardPanel player1testPanel = new CardPanel(playertest1);
-//        CardPanel player2testPanel = new CardPanel(playertest2);
-//        CardPanel player3testPanel = new CardPanel(playertest3);
-//        CardPanel player4testPanel = new CardPanel(playertest4);
-//        
-//        CardHolderPlayer2.add(testCardPanel);
-//        testCardPanel.setLocation(CardHolderPlayer2.getComponentCount()*20,0);
-//        
-//        CardHolderPlayer2.add(player1testPanel);
-//        player1testPanel.setLocation(CardHolderPlayer2.getComponentCount()*20,0);
-//        
-//        CardHolderPlayer2.add(player2testPanel);
-//        player2testPanel.setLocation(CardHolderPlayer2.getComponentCount()*20,0);
-//        
-//        CardHolderPlayer2.add(player3testPanel);
-//        player3testPanel.setLocation(CardHolderPlayer2.getComponentCount()*20,0);
-//        
-//        CardHolderPlayer2.add(player4testPanel);
-//        player4testPanel.setLocation(CardHolderPlayer2.getComponentCount()*20,0);
-//        System.out.println(CardHolderPlayer2.getComponentCount());
-//        
-//        swingWorkerCardDraw(aceOfSpades, cardHolderPlayer4);
-/*        
-        Card playertest2 = new Card(3,3,true);
-        Card playertest3 = new Card(3,4,true);
-        Card playertest4 = new Card(3,11,true);
-        CardPanel testCardPanel = new CardPanel(aceOfSpades);
-        CardPanel player1testPanel = new CardPanel(playertest1);
-        CardPanel player2testPanel = new CardPanel(playertest2);
-        CardPanel player3testPanel = new CardPanel(playertest3);
-        CardPanel player4testPanel = new CardPanel(playertest4);
                 
-        CardHolderPlayer4.add(player1testPanel);
-        CardHolderPlayer3.add(player2testPanel);
-        CardHolderPlayer2.add(player3testPanel);
-        CardHolderPlayer1.add(player4testPanel);
-        System.out.println(testCardPanel.getLocation().toString());
-*/        
         pack();
     }
     /**
@@ -524,7 +473,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
 
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
         betStakeUpdater.nonZeroBet();
-        swingWorkerBet(betStakeUpdater.updateBet(betStakeUpdater.getBet()));
+        swingWorkerBet(betStakeUpdater.getBet());
         swingWorkerStake(betStakeUpdater.updateStake());
         client.sendMessageToServer("PLAY_FOR_" + betStakeUpdater.getBet());
     }//GEN-LAST:event_playButtonActionPerformed
