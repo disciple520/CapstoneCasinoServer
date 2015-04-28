@@ -29,6 +29,7 @@ public class BlackjackClient {
     Hand dealersHand;
     int stake;
     int bet;
+    boolean isDealersFirstCard = true;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -80,6 +81,7 @@ public class BlackjackClient {
                     }
                     else if (response.equals("DEAL")) {
                        gui.clearCardHolderPanels();
+                       isDealersFirstCard = true;
                     } 
                     else if(response.equals("ENABLE_PLAY_AND_CLEAR")){
                         gui.playButton.setEnabled(true);
@@ -121,6 +123,10 @@ public class BlackjackClient {
                             }
                         }
                         if (placement == 5) { // i.e. if card was dealt dealer instead of player
+                            if (isDealersFirstCard) {
+                                card.flip();
+                                isDealersFirstCard = !isDealersFirstCard;
+                            }
                             dealersHand.addCard(card);
                             sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHand.getValue());
                             if (dealersHand.isBlackjack()) {

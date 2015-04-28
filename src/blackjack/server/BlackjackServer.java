@@ -17,8 +17,6 @@ public class BlackjackServer {
     private static final int DEALER = 5;
     
     public static final int NO_ACTION = 0;
-    // maybe add ACTION_FINISHED to differentiate from this one
-    // I have some logic errors where the dealer acts before he should sometimes
     public static final int HIT = 1;
     public static final int STAND = 2;
     public static final int DOUBLE = 3;
@@ -46,7 +44,6 @@ public class BlackjackServer {
     public static void main(String[] args) throws Exception {
         ServerSocket listener = new ServerSocket(12345);
         System.out.println("Blackjack Server is Running");
-        List<Session> playerHelpers = new ArrayList<Session>();
         currentSeat = 1;
         
         try {
@@ -88,6 +85,7 @@ public class BlackjackServer {
                         if (getPlayer(currentSeat).dealerHasBlackjack == false) {
                             System.out.println("Dealer does not have blackjack");
                             while (currentSeat != DEALER) {
+                                System.out.println("current seat can't be DEALER if we're in here!");
                                 Thread.sleep(250);
                                 if (getPlayer(currentSeat).hasBlackjack == false) {
                                     if (getPlayer(currentSeat).busted == false) {
@@ -97,11 +95,12 @@ public class BlackjackServer {
                                             sendMessageAllClients("DEALING_" + getPlayerRanksArray().get(getPlayerRanksArray().size()-1) + "_OF_" + getPlayerSuitArray().get(getPlayerSuitArray().size()-1) + "_TO" + "_"+currentSeat);
                                             getPlayer(currentSeat).action = NO_ACTION;
                                         }
-                                        if (getPlayer(currentSeat).action == STAND){
+                                        else if (getPlayer(currentSeat).action == STAND){
                                             System.out.println("Player "+ currentSeat+" stands!");
                                             getPlayer(currentSeat).action = NO_ACTION;
                                             getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
                                             if(maxPlayers == 1){
+                                                System.out.println("Setting currentSeat to DEALER here too");
                                                 currentSeat = DEALER;
                                             } else {
                                                 currentSeat++;
@@ -112,17 +111,7 @@ public class BlackjackServer {
                                             }
                                         }
                                     } else {
-                                        getPlayer(currentSeat).action = NO_ACTION;
-                                        getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
-                                        if(maxPlayers == 1){
-                                            currentSeat = DEALER;
-                                        } else {
-                                            currentSeat++;
-                                            if(currentSeat < 5)
-                                                getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-                                            else
-                                                currentSeat = DEALER;
-                                        }
+                                        moveToNextPlayer(); 
                                     }
                                 } else {
                                     System.out.println("Player "+ currentSeat +" has blackjack");
@@ -130,7 +119,6 @@ public class BlackjackServer {
                                     getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
                                     if(maxPlayers == 1){
                                         currentSeat = PLAYER_ONE;
-                                        //getPlayer(currentSeat).sendMessageToClient("ENABLE_PLAY_AND_CLEAR");    
                                     } else {
                                         currentSeat++;
                                         if(currentSeat < 5)
@@ -158,21 +146,23 @@ public class BlackjackServer {
                                         System.out.println("Dealer stands with " + playerOne.dealersHandValue);
                                         currentSeat = PLAYER_ONE;
                                     }
+                                } else {
+                                    moveToNextPlayer();
                                 }
                             }
                             payOrTakeBets();
-                            playerOne.dealersHandValue = 0;
+                            getPlayer(currentSeat).dealersHandValue = 0;
                             //playerOne.sendMessageToClient("ENABLE_PLAY_AND_CLEAR");
-                            playerOne.sendMessageToClient("DISABLE_ACTION_BUTTONS");
+                            getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
                         } else {
                             System.out.println("Dealer has blackjack");
                             currentSeat = PLAYER_ONE;
-                            playerOne.action = NO_ACTION;
+                            getPlayer(currentSeat).action = NO_ACTION;
                             payOrTakeBets();
-                            playerOne.dealersHandValue = 0;
-                            playerOne.dealerHasBlackjack = false;
+                            getPlayer(currentSeat).dealersHandValue = 0;
+                            getPlayer(currentSeat).dealerHasBlackjack = false;
                             //playerOne.sendMessageToClient("ENABLE_PLAY_AND_CLEAR");
-                            playerOne.sendMessageToClient("DISABLE_ACTION_BUTTONS");
+                            getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
                         }
                         sendMessageAllClients("ENABLE_PLAY_AND_CLEAR");
                         for(int i=1;i<=maxPlayers;i++){
@@ -200,19 +190,35 @@ public class BlackjackServer {
     private static void sendHandsToClients() throws InterruptedException {
         
         sendMessageAllClients("DEALING_" + playerOneRanks.get(0) + "_OF_" + playerOneSuits.get(0) + "_TO" + "_1");
+        Thread.sleep(300);
         sendMessageAllClients("DEALING_" + dealerRanks.get(0) + "_OF_" + dealerSuits.get(0) + "_TO" + "_5");
         Thread.sleep(300);
         sendMessageAllClients("DEALING_" + playerOneRanks.get(1) + "_OF_" + playerOneSuits.get(1) + "_TO" + "_1");
+        Thread.sleep(300);
         sendMessageAllClients("DEALING_" + dealerRanks.get(1) + "_OF_" + dealerSuits.get(1) + "_TO" + "_5");
         Thread.sleep(300);
         if(maxPlayers >1) {
+
+        sendMessageAllClients("DEALING_" + playerOneRanks.get(0) + "_OF_" + playerOneSuits.get(0) + "_TO" + "_1");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerTwoRanks.get(0) + "_OF_" + playerTwoSuits.get(0) + "_TO" + "_2");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerThreeRanks.get(0) + "_OF_" + playerThreeSuits.get(0) + "_TO" + "_3");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerFourRanks.get(0) + "_OF_" + playerFourSuits.get(0) + "_TO" + "_4");
-        Thread.sleep(300);
+        Thread.sleep(200);
+        sendMessageAllClients("DEALING_" + dealerRanks.get(0) + "_OF_" + dealerSuits.get(0) + "_TO" + "_5");
+        Thread.sleep(200);
+        sendMessageAllClients("DEALING_" + playerOneRanks.get(1) + "_OF_" + playerOneSuits.get(1) + "_TO" + "_1");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerTwoRanks.get(1) + "_OF_" + playerTwoSuits.get(1) + "_TO" + "_2");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerThreeRanks.get(1) + "_OF_" + playerThreeSuits.get(1) + "_TO" + "_3");
+        Thread.sleep(200);
         sendMessageAllClients("DEALING_" + playerFourRanks.get(1) + "_OF_" + playerFourSuits.get(1) + "_TO" + "_4");
+        Thread.sleep(200);
+        sendMessageAllClients("DEALING_" + dealerRanks.get(1) + "_OF_" + dealerSuits.get(1) + "_TO" + "_5");
+        Thread.sleep(200);
         }
 /*       for(int i =1;i<=maxPlayers;i++) {
            getPlayer(i).sendMessageToClient("DEALING_" + playerOneRanks.get(0) + "_OF_" + playerOneSuits.get(0) + "_TO" + "_1");
@@ -315,6 +321,21 @@ public class BlackjackServer {
             return playerFour;
         else
             return currentPlayer;
+    }
+    
+    private static void moveToNextPlayer() {
+        getPlayer(currentSeat).action = NO_ACTION;
+        getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
+        if(maxPlayers == 1){
+            System.out.println("Setting currentSeat to DEALER");
+            currentSeat = DEALER;
+        } else {
+            currentSeat++;
+            if(currentSeat < 5)
+                getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
+            else
+                currentSeat = DEALER;
+        }
     }
     private static void payOrTakeBets() {
         String msg = "problem in payOrTakeBets()";

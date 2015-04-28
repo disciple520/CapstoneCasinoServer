@@ -83,9 +83,7 @@ public class Session {
                         
                         if (command.startsWith("PLAY_FOR_")) {
                             bet = Integer.parseInt(command.substring(9));
-                            //outputToClient.println("DEAL");
                             outputToClient.println("DISABLE_PLAY_AND_CLEAR");
-                            //outputToClient.println("");
                             isReadyForDeal = true;
                             System.out.println("command = PLAY from Player " + playerNumber + " for $" + bet);
                         }
@@ -95,12 +93,11 @@ public class Session {
                         }
                         else if (command.equals("STAND")) {
                             action = STAND;
-                            System.out.println("Action being set to STAND");
                         }
                         else if (command.startsWith("DEALERS_HAND_VALUE_IS_")) {
                             dealersHandValue = Integer.parseInt(command.substring(22));
                         }
-                        else if (command.startsWith("PLAYER1_HAND_VALUE_IS_")) {
+                        else if (command.startsWith("PLAYER" + playerNumber + "_HAND_VALUE_IS_")) {
                             handValue = Integer.parseInt(command.substring(22));
                         }
                         else if (command.equals("PLAYER_BUSTED")){
