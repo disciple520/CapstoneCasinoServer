@@ -23,12 +23,12 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     Card card;
     BlackjackClient client;
     public BetStakeUpdater betStakeUpdater = new BetStakeUpdater();
-    CardHolder currentHolder;
-    CardHolder cardHolderPlayer1;
-    CardHolder cardHolderPlayer2;
-    CardHolder cardHolderPlayer3;
-    CardHolder cardHolderPlayer4;
-    CardHolder cardHolderDealer;
+    public CardHolder currentHolder;
+    public CardHolder cardHolderPlayer1;
+    public CardHolder cardHolderPlayer2;
+    public CardHolder cardHolderPlayer3;
+    public CardHolder cardHolderPlayer4;
+    public CardHolder cardHolderDealer;
     
     CardHolder ghostCardHolder;
     
@@ -74,9 +74,6 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
                     case 5:
                         currentHolder = cardHolderDealer;
                         break;
-//                    case 6:
-//                        currentHolder = cardHolderTest;
-//                        break;
                     default: 
                         System.out.println("Problem drawing card");
                 }
@@ -464,7 +461,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_hitButtonClicked
 
     private void doubleButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doubleButtonClicked
-        // TODO add your handling code here:
+        client.sendMessageToServer("DOUBLE");
+        betStakeUpdater.updateStake();
+        betStakeUpdater.updateBet(betStakeUpdater.getBet());
+        swingWorkerBet(betStakeUpdater.getBet());
+        swingWorkerStake(betStakeUpdater.getStake());
     }//GEN-LAST:event_doubleButtonClicked
 
     private void standButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standButtonClicked

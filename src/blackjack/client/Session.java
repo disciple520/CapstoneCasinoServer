@@ -42,7 +42,7 @@ public class Session {
         public boolean hasBlackjack;
         public boolean dealerHasBlackjack;
         public int bet;
-        public int action;
+        public int action = NO_ACTION;
         public int handValue;
         public int dealersHandValue;
      
@@ -90,6 +90,9 @@ public class Session {
                         else if (command.equals("HIT")) {
                             System.out.println("Action being set to HIT");
                             action = HIT;
+                        }
+                        else if (command.equals("DOUBLE")) {
+                            action = DOUBLE;
                         }
                         else if (command.equals("STAND")) {
                             action = STAND;

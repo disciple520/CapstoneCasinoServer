@@ -30,6 +30,7 @@ public class BlackjackClient {
     int stake;
     int bet;
     boolean isDealersFirstCard = true;
+    boolean isDealersTurn = false;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -101,6 +102,14 @@ public class BlackjackClient {
                         gui.standButton.setEnabled(true);
                         gui.doubleButton.setEnabled(true);
                     }
+                    else if(response.equals("DEALERS_TURN")) {
+                        if (dealersHand.getCardAtIndex(0).isFaceUp() == false) {
+                            dealersHand.getCardAtIndex(0).flip();
+                            gui.cardHolderDealer.removeAll();
+                            gui.swingWorkerCardDraw(dealersHand.getCardAtIndex(0), 5);
+                            gui.swingWorkerCardDraw(dealersHand.getCardAtIndex(1), 5);
+                        }
+                    }
                     //This is a command of the form "DEALING_RANK_OF_SUIT_TO_PLAYER
                     //i.e. "DEALING_11_OF_3_TO_5" means dealing jack of spades to dealer
                     else if(response.startsWith("DEALING_")){ 
@@ -109,10 +118,12 @@ public class BlackjackClient {
                         int suit = Integer.parseInt(parameters[3]);
                         int placement = Integer.parseInt(parameters[5]);
                         card = new Card(rank, suit);
-                        gui.swingWorkerCardDraw(card, placement);
                         if (placement == playerNumber) {
-                            System.out.println("Card being dealt to self");
                             hand.addCard(card);
+//                            gui.cardHolderPlayer1.removeAll();
+//                            for(int i=0; i<hand.getSizeOfHand(); i++){
+//                                gui.swingWorkerCardDraw(hand.getCardAtIndex(i), placement);
+//                            }
                             if (hand.isBusted()) {
                                 sendMessageToServer("PLAYER_BUSTED");
                             } else {
@@ -121,13 +132,16 @@ public class BlackjackClient {
                             if (hand.isBlackjack()) {
                                 sendMessageToServer("PLAYER_HAS_BLACKJACK");
                             }
-                        }
-                        if (placement == 5) { // i.e. if card was dealt dealer instead of player
+                        } else if (placement == 5) { // i.e. if card was dealt dealer instead of player
                             if (isDealersFirstCard) {
                                 card.flip();
-                                isDealersFirstCard = !isDealersFirstCard;
+                                isDealersFirstCard = false;
                             }
                             dealersHand.addCard(card);
+//                            gui.cardHolderDealer.removeAll();
+//                            for(int i=dealersHand.getSizeOfHand()-1; i>=0; i--){
+//                                gui.swingWorkerCardDraw(hand.getCardAtIndex(i), placement);
+//                            }
                             sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHand.getValue());
                             if (dealersHand.isBlackjack()) {
                                 sendMessageToServer("BLACKJACK_FOR_DEALER");
@@ -136,6 +150,7 @@ public class BlackjackClient {
                             }
                                 
                         }
+                        gui.swingWorkerCardDraw(card, placement);
                     } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH") || response.equals("3:2")) {
                         bet = gui.betStakeUpdater.getBet();
                         stake = gui.betStakeUpdater.getStake();
