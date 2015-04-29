@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import blackjack.core.Hand;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,6 +101,9 @@ public class Session {
                         }
                         else if (command.startsWith("PLAYER" + playerNumber + "_HAND_VALUE_IS_")) {
                             handValue = Integer.parseInt(command.substring(22));
+                            if(handValue ==21){
+                                action = STAND;
+                            }
                         }
                         else if (command.equals("PLAYER_BUSTED")){
                             busted = true;

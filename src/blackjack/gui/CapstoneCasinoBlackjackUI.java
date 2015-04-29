@@ -47,6 +47,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
      * @param card
      * @param placement
      */
+    //handles the cards values and draws them onto the card holder of the correct player
     public void swingWorkerCardDraw(Card card, int placement) {
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             
@@ -86,12 +87,12 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
-    
+    //updates both the bet and the stake
     public void updateBetAndStake() {
         swingWorkerBet(betStakeUpdater.getBet());
         swingWorkerStake(betStakeUpdater.getStake());
     }
-    
+    //clears the cards for a new hand
     public void clearCardHolderPanels(){
         cardHolderPlayer1.removeAll();
         cardHolderPlayer1.repaint();
@@ -105,7 +106,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         cardHolderDealer.repaint();
         
     }
-    
+    //updates the betlabel
     private void swingWorkerBet(int value) {
         int passed = value;
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
@@ -124,6 +125,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    //this updates the turn counter on the bottom
         public void swingWorkerTurn(String playerTurn) {
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
             
@@ -141,6 +143,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    //this worker updates the label for the player number to include their bet amount    
     public void swingWorkerPlayerUpdate(int bet, int playerNumber) {
         int passed = bet;
         SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
@@ -165,8 +168,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    //worker to updates the stake label
     private void swingWorkerStake(int stake) {
-        //int passed = value;
         SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
             
             @Override
@@ -183,6 +186,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    //sets up the spaces for cards to get drawn into
     private void PanelHolderSetup() {
         cardHolderPlayer4 = new CardHolder();
         cardHolderPlayer4.setLayout(null);
@@ -492,27 +496,32 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     private void fiftyDChipClick(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fiftyDChipClick
         swingWorkerBet(betStakeUpdater.updateBet(50));
     }//GEN-LAST:event_fiftyDChipClick
-
+//clears bet amount
     private void clearButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonClicked
        swingWorkerBet(betStakeUpdater.resetBet());
     }//GEN-LAST:event_clearButtonClicked
-
+//send message to server to draw a card
     private void hitButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hitButtonClicked
         client.sendMessageToServer("HIT");
     }//GEN-LAST:event_hitButtonClicked
-
+//logic to make sure you can bet more than you have with double button
     private void doubleButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doubleButtonClicked
         client.sendMessageToServer("DOUBLE");
-        betStakeUpdater.updateStake();
-        betStakeUpdater.updateBet(betStakeUpdater.getBet());
+         
+        if(betStakeUpdater.getBet()*2 > betStakeUpdater.getStake()) {
+            betStakeUpdater.setBet(betStakeUpdater.getStake());
+        }else {
+            betStakeUpdater.updateStake();
+            betStakeUpdater.updateBet(betStakeUpdater.getBet());
+        }
         swingWorkerBet(betStakeUpdater.getBet());
         swingWorkerStake(betStakeUpdater.getStake());
     }//GEN-LAST:event_doubleButtonClicked
-
+//sends stand command to server
     private void standButtonClicked(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_standButtonClicked
         client.sendMessageToServer("STAND");
     }//GEN-LAST:event_standButtonClicked
-
+//if you dont put a bet in, min of 1 will be bet
     private void playButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_playButtonActionPerformed
         betStakeUpdater.nonZeroBet();
         swingWorkerBet(betStakeUpdater.getBet());
@@ -522,11 +531,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backGroundGraphic;
-    private javax.swing.JButton betCheck1;
-    private javax.swing.JButton betCheck100;
-    private javax.swing.JButton betCheck25;
-    private javax.swing.JButton betCheck5;
-    private javax.swing.JButton betCheck50;
+    public javax.swing.JButton betCheck1;
+    public javax.swing.JButton betCheck100;
+    public javax.swing.JButton betCheck25;
+    public javax.swing.JButton betCheck5;
+    public javax.swing.JButton betCheck50;
     public javax.swing.JLabel betLabel;
     public javax.swing.JButton clearButton;
     public javax.swing.JButton doubleButton;

@@ -89,10 +89,21 @@ public class BlackjackClient {
                     else if(response.equals("ENABLE_PLAY_AND_CLEAR")){
                         gui.playButton.setEnabled(true);
                         gui.clearButton.setEnabled(true);
+                        gui.betCheck1.setEnabled(true);
+                        gui.betCheck5.setEnabled(true);
+                        gui.betCheck25.setEnabled(true);
+                        gui.betCheck50.setEnabled(true);
+                        gui.betCheck100.setEnabled(true);
                     } 
                     else if(response.equals("DISABLE_PLAY_AND_CLEAR")){
                         gui.playButton.setEnabled(false); 
                         gui.clearButton.setEnabled(false);
+                        gui.betCheck1.setEnabled(false);
+                        gui.betCheck5.setEnabled(false);
+                        gui.betCheck25.setEnabled(false);
+                        gui.betCheck50.setEnabled(false);
+                        gui.betCheck100.setEnabled(false);
+                        
                     }
                     else if(response.equals("DISABLE_ACTION_BUTTONS")) {
                         gui.hitButton.setEnabled(false);
@@ -123,8 +134,12 @@ public class BlackjackClient {
                         String[] parameters = response.split("_");
                         String player = parameters[1];
                         gui.swingWorkerTurn("Player "+player);
+                        if(Integer.parseInt(player) == 5)
+                            gui.swingWorkerTurn("Dealer");
                     }
                     else if(response.equals("CLOSE")){
+                        //closes all attached clients
+                        //found in http://stackoverflow.com/questions/1234912/how-to-programmatically-close-a-jframe
                         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
                     }
                     //This is a command of the form "DEALING_RANK_OF_SUIT_TO_PLAYER

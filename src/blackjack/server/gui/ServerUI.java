@@ -7,14 +7,16 @@ package blackjack.server.gui;
 
 import blackjack.server.BlackjackServer;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Patrick
  */
+//basic gui that when pressed resets the server application
 public class ServerUI extends javax.swing.JFrame {
     private final BlackjackServer server;
 
@@ -23,6 +25,16 @@ public class ServerUI extends javax.swing.JFrame {
      */
     public ServerUI(BlackjackServer BlackjackServer) {
         this.server = BlackjackServer;
+    //on server creation asks if you want 4 or 1 player    
+    JDialog.setDefaultLookAndFeelDecorated(true);
+    int response = JOptionPane.showConfirmDialog(null, "Do you want 4 players?", "Confirm",
+    JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+    if (response == JOptionPane.NO_OPTION) {
+      server.setPlayers(1);
+    } else if (response == JOptionPane.YES_OPTION) {
+      server.setPlayers(4);
+    } 
+        
         initComponents();
     }
 
