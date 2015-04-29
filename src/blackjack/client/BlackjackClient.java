@@ -9,6 +9,7 @@ import blackjack.core.Card;
 import blackjack.core.Hand;
 import blackjack.gui.CapstoneCasinoBlackjackUI;
 import java.awt.Image;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -28,7 +29,7 @@ public class BlackjackClient {
     Hand hand;
     Hand dealersHand;
     int stake;
-    int bet;
+    public int bet;
     boolean isDealersFirstCard = true;
     boolean isDealersTurn = false;
 
@@ -83,6 +84,7 @@ public class BlackjackClient {
                     else if (response.equals("DEAL")) {
                        gui.clearCardHolderPanels();
                        isDealersFirstCard = true;
+                       bet = gui.betStakeUpdater.getBet();
                     } 
                     else if(response.equals("ENABLE_PLAY_AND_CLEAR")){
                         gui.playButton.setEnabled(true);
@@ -108,7 +110,22 @@ public class BlackjackClient {
                             gui.cardHolderDealer.removeAll();
                             gui.swingWorkerCardDraw(dealersHand.getCardAtIndex(0), 5);
                             gui.swingWorkerCardDraw(dealersHand.getCardAtIndex(1), 5);
+                            gui.swingWorkerTurn("Dealer");
                         }
+                    }
+                    else if(response.startsWith("UPDATE_")) {
+                        String[] parameters = response.split("_");
+                        int player = Integer.parseInt(parameters[1]);
+                        int bet = Integer.parseInt(parameters[3]);
+                        gui.swingWorkerPlayerUpdate(bet,player);
+                    }
+                    else if(response.startsWith("TURN_")) {
+                        String[] parameters = response.split("_");
+                        String player = parameters[1];
+                        gui.swingWorkerTurn("Player "+player);
+                    }
+                    else if(response.equals("CLOSE")){
+                        gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
                     }
                     //This is a command of the form "DEALING_RANK_OF_SUIT_TO_PLAYER
                     //i.e. "DEALING_11_OF_3_TO_5" means dealing jack of spades to dealer
@@ -168,6 +185,7 @@ public class BlackjackClient {
                         gui.updateBetAndStake();
                         hand.clearHand();
                         dealersHand.clearHand();
+                        gui.swingWorkerTurn("Betting");
                     }
                 }
                }

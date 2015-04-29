@@ -18,8 +18,15 @@ public class BetStakeUpdater {
     
     
     public int updateBet(int addedBet) {
-        betTracker = addedBet + betTracker;
-        return betTracker;
+        if(betTracker <= stakeTracker)
+        {
+            betTracker = addedBet + betTracker;
+            return betTracker;
+        }
+        else {
+            betTracker = stakeTracker;
+            return betTracker;
+        }
     }
     public int resetBet() {
         betTracker = 0;
@@ -31,6 +38,9 @@ public class BetStakeUpdater {
     public int updateStake() {
        int tempBet = getBet();
        stakeTracker =  stakeTracker - tempBet;
+       if(stakeTracker <= 0){
+           stakeTracker = 1499;
+       }
        return stakeTracker;
     }
     public int getStake() {

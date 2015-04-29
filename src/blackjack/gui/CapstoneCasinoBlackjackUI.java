@@ -124,6 +124,47 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+        public void swingWorkerTurn(String playerTurn) {
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+            
+            @Override
+            protected Void doInBackground() throws Exception {
+                return null;
+                
+            }
+            @Override
+            protected void done() {
+                turnLabel.setText(playerTurn);
+            }
+
+
+        };
+        worker.execute();
+    }
+    public void swingWorkerPlayerUpdate(int bet, int playerNumber) {
+        int passed = bet;
+        SwingWorker<Void, Integer> worker = new SwingWorker<Void, Integer>() {
+            
+            @Override
+            protected Void doInBackground() throws Exception {
+                return null;                
+            }
+            @Override
+            protected void done() {
+                if(playerNumber == 1){
+                    player1NameLabel.setText("Player 1: Bet "+Integer.toString(passed));  
+                } else if (playerNumber == 2){
+                    player2NameLabel.setText("Player 2: Bet "+Integer.toString(passed));
+                } else if (playerNumber == 3){
+                    player3NameLabel.setText("Player 3: Bet "+Integer.toString(passed));
+                } else if (playerNumber == 4){
+                    player4NameLabel.setText("Player 4: Bet "+Integer.toString(passed));   
+                }
+            }
+
+        };
+        worker.execute();
+    }
     private void swingWorkerStake(int stake) {
         //int passed = value;
         SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
@@ -153,11 +194,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         
         cardHolderPlayer2 = new CardHolder();
         cardHolderPlayer2.setLayout(null);
-        cardHolderPlayer2.setBounds(590,330,205,125);
+        cardHolderPlayer2.setBounds(575,330,205,125);
         
         cardHolderPlayer1 = new CardHolder();
         cardHolderPlayer1.setLayout(null);
-        cardHolderPlayer1.setBounds(790,160,205,125);
+        cardHolderPlayer1.setBounds(775,160,205,125);
         
         cardHolderDealer = new CardHolder();
         cardHolderDealer.setLayout(null);
@@ -198,11 +239,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         standButton = new javax.swing.JButton();
         betLabel = new javax.swing.JLabel();
         stakeLabel = new javax.swing.JLabel();
-        timerLabel = new javax.swing.JLabel();
-        player4Label = new javax.swing.JLabel();
-        player3Label = new javax.swing.JLabel();
-        player1Label = new javax.swing.JLabel();
-        player2Label = new javax.swing.JLabel();
+        turnLabel = new javax.swing.JLabel();
+        player1NameLabel = new javax.swing.JLabel();
+        player2NameLabel = new javax.swing.JLabel();
+        player3NameLabel = new javax.swing.JLabel();
+        player4NameLabel = new javax.swing.JLabel();
         backGroundGraphic = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -380,40 +421,40 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         getContentPane().add(stakeLabel);
         stakeLabel.setBounds(640, 590, 80, 30);
 
-        timerLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        timerLabel.setForeground(new java.awt.Color(51, 255, 51));
-        timerLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        timerLabel.setText("1:00");
-        timerLabel.setToolTipText("");
-        getContentPane().add(timerLabel);
-        timerLabel.setBounds(750, 600, 100, 30);
+        turnLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        turnLabel.setForeground(new java.awt.Color(51, 255, 51));
+        turnLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        turnLabel.setText("Betting");
+        turnLabel.setToolTipText("");
+        getContentPane().add(turnLabel);
+        turnLabel.setBounds(750, 600, 100, 30);
+        turnLabel.getAccessibleContext().setAccessibleName("");
 
-        player4Label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player1.png"))); // NOI18N
-        player4Label.setText("jLabel1");
-        player4Label.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player1Gray.png"))); // NOI18N
-        player4Label.setEnabled(false);
-        getContentPane().add(player4Label);
-        player4Label.setBounds(90, 170, 100, 100);
+        player1NameLabel.setBackground(new java.awt.Color(255, 255, 255));
+        player1NameLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        player1NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player1NameLabel.setText("Player 1");
+        player1NameLabel.setName("player1NameLabel"); // NOI18N
+        getContentPane().add(player1NameLabel);
+        player1NameLabel.setBounds(800, 120, 140, 30);
 
-        player3Label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player2.png"))); // NOI18N
-        player3Label.setText("jLabel1");
-        player3Label.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player2Gray.png"))); // NOI18N
-        player3Label.setEnabled(false);
-        getContentPane().add(player3Label);
-        player3Label.setBounds(330, 330, 80, 110);
+        player2NameLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        player2NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player2NameLabel.setText("Player 2");
+        getContentPane().add(player2NameLabel);
+        player2NameLabel.setBounds(570, 300, 150, 30);
 
-        player1Label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player4.png"))); // NOI18N
-        player1Label.setText("jLabel1");
-        player1Label.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player4Gray.png"))); // NOI18N
-        getContentPane().add(player1Label);
-        player1Label.setBounds(810, 170, 100, 100);
+        player3NameLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        player3NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player3NameLabel.setText("Player 3");
+        getContentPane().add(player3NameLabel);
+        player3NameLabel.setBounds(300, 300, 150, 30);
 
-        player2Label.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player3.png"))); // NOI18N
-        player2Label.setText("jLabel1");
-        player2Label.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/player3Gray.png"))); // NOI18N
-        player2Label.setEnabled(false);
-        getContentPane().add(player2Label);
-        player2Label.setBounds(600, 330, 90, 100);
+        player4NameLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        player4NameLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        player4NameLabel.setText("Player 4");
+        getContentPane().add(player4NameLabel);
+        player4NameLabel.setBounds(70, 120, 150, 30);
 
         backGroundGraphic.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         backGroundGraphic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/BlackjackBackground.png"))); // NOI18N
@@ -491,13 +532,13 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     public javax.swing.JButton doubleButton;
     public javax.swing.JButton hitButton;
     public javax.swing.JButton playButton;
-    private javax.swing.JLabel player1Label;
-    public javax.swing.JLabel player2Label;
-    public javax.swing.JLabel player3Label;
-    public javax.swing.JLabel player4Label;
+    private javax.swing.JLabel player1NameLabel;
+    private javax.swing.JLabel player2NameLabel;
+    private javax.swing.JLabel player3NameLabel;
+    private javax.swing.JLabel player4NameLabel;
     private javax.swing.JLabel stakeLabel;
     public javax.swing.JButton standButton;
-    public javax.swing.JLabel timerLabel;
+    public javax.swing.JLabel turnLabel;
     // End of variables declaration//GEN-END:variables
 
     

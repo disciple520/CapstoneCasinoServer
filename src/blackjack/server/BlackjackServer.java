@@ -1,13 +1,19 @@
 package blackjack.server;
 
 import blackjack.client.Session;
+import blackjack.server.gui.ServerUI;
+import java.io.File;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
 import java.net.ServerSocket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import javax.swing.SwingUtilities;
 
 public class BlackjackServer {
-
+    
+    private ServerUI serverUI;
     // Some constants to make the code more readable
     private static final int NO_PLAYER = 0;
     private static final int PLAYER_ONE = 1;
@@ -41,11 +47,27 @@ public class BlackjackServer {
     static List<Integer> dealerRanks = new ArrayList<>();
     static List<Integer> dealerSuits = new ArrayList<>();
     
-    
+    public BlackjackServer() throws Exception{
+        serverUI = new ServerUI(this);
+        serverUI.setLocation(200, 50);
+        SwingUtilities.invokeLater(new Runnable() {
+            
+            @Override
+            public void run() {
+                serverUI.setVisible(true);
+            }
+        });
+    }
     public static void main(String[] args) throws Exception {
+        BlackjackServer server = new BlackjackServer();
+        server.play();
+    }
+    public void play() throws Exception {    
         ServerSocket listener = new ServerSocket(12345);
         System.out.println("Blackjack Server is Running");
         currentSeat = 1;
+        
+
         
         try {
             while (true) {
@@ -79,13 +101,13 @@ public class BlackjackServer {
                     if (checkAllPlayersReadyStatus() == true) {
                         playerOne.dealerBusted = false;
                         sendMessageAllClients("DEAL");
+                        ShowPlayerBets();
                         sendHandsToClients();                        
                         getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-                        Thread.sleep(500);
-                        //getPlayer(currentSeat).isReadyForDeal = false; // just resetting for next time
+                        sendMessageAllClients("TURN_"+currentSeat);
                         Thread.sleep(2000); //give dealer time to check for blackjack
                         if (getPlayer(currentSeat).dealerHasBlackjack == false) {
-                            System.out.println("Dealer does not have blackjack");
+                            System.out.println("Dealer does not have blackjack");                            
                             while (currentSeat != DEALER) {
                                 Thread.sleep(250);
                                 if (getPlayer(currentSeat).hasBlackjack == false) {
@@ -99,34 +121,15 @@ public class BlackjackServer {
                                         else if (getPlayer(currentSeat).action == DOUBLE) {
                                             System.out.println("Player "+ currentSeat+" doubles!");
                                             sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO_" + currentSeat);
-                                            getPlayer(currentSeat).action = NO_ACTION;
-                                            getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
-                                            if(maxPlayers == 1){
-                                                moveToDealer();
-                                            } else {
-                                                currentSeat++;
-                                                if(currentSeat < 5)
-                                                    getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-                                                else
-                                                    moveToDealer();
-                                            }
+                                            moveToNextPlayer();
                                         }
                                         else if (getPlayer(currentSeat).action == STAND){
                                             System.out.println("Player "+ currentSeat+" stands!");
-                                            getPlayer(currentSeat).action = NO_ACTION;
-                                            getPlayer(currentSeat).sendMessageToClient("DISABLE_ACTION_BUTTONS");
-                                            if(maxPlayers == 1){
-                                                moveToDealer();
-                                            } else {
-                                                currentSeat++;
-                                                if(currentSeat < 5)
-                                                    getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-                                                else
-                                                    moveToDealer();
-                                            }
+                                            moveToNextPlayer();
+                                            
                                         }
                                     } else {
-                                        moveToNextPlayer(); 
+                                        moveToNextPlayer();
                                     }
                                 } else {
                                     System.out.println("Player "+ currentSeat +" has blackjack");
@@ -347,8 +350,10 @@ public class BlackjackServer {
             currentSeat++;
             if(currentSeat < 5)
                 getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-
+            else
+               moveToDealer();
         }
+        sendMessageAllClients("TURN_"+currentSeat);
     }
     
     private static void moveToDealer() {
@@ -404,6 +409,74 @@ public class BlackjackServer {
         playerFourRanks.clear();
         dealerRanks.clear();
     }
-}
 
+    private static void ShowPlayerBets() {
+        sendMessageAllClients("UPDATE_1_BET_"+playerOne.bet);
+        if(maxPlayers != 1){
+            sendMessageAllClients("UPDATE_2_BET_"+playerTwo.bet);
+            sendMessageAllClients("UPDATE_3_BET_"+playerThree.bet);
+            sendMessageAllClients("UPDATE_4_BET_"+playerFour.bet);
+        }
+    }
+    
+public static final String SUN_JAVA_COMMAND = "sun.java.command";
+/**
+ * Restart the current Java application
+ * @throws IOException
+ */
+    public static void restartApplication() throws IOException {
+        sendMessageAllClients("CLOSE");
+	try {
+            // java binary
+            String java = System.getProperty("java.home") + "/bin/java";
+            // vm arguments
+            List<String> vmArguments = ManagementFactory.getRuntimeMXBean().getInputArguments();
+            StringBuffer vmArgsOneLine = new StringBuffer();
+            for (String arg : vmArguments) {
+                // if it's the agent argument : we ignore it otherwise the
+                // address of the old application and the new one will be in conflict
+                if (!arg.contains("-agentlib")) {
+                    vmArgsOneLine.append(arg);
+                    vmArgsOneLine.append(" ");
+                }
+            }
+            // init the command to execute, add the vm args
+            final StringBuffer cmd = new StringBuffer("\"" + java + "\" " + vmArgsOneLine);
+
+            // program main and program arguments
+            String[] mainCommand = System.getProperty(SUN_JAVA_COMMAND).split(" ");
+            // program main is a jar
+            if (mainCommand[0].endsWith(".jar")) {
+                // if it's a jar, add -jar mainJar
+                cmd.append("-jar " + new File(mainCommand[0]).getPath());
+            } else {
+                // else it's a .class, add the classpath and mainClass
+                cmd.append("-cp \"" + System.getProperty("java.class.path") + "\" " + mainCommand[0]);
+            }
+            // finally add program arguments
+            for (int i = 1; i < mainCommand.length; i++) {
+                cmd.append(" ");
+                cmd.append(mainCommand[i]);
+            }
+            // execute the command in a shutdown hook, to be sure that all the
+            // resources have been disposed before restarting the application
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        Runtime.getRuntime().exec(cmd.toString());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            // exit
+
+            System.exit(0);
+	} catch (Exception e) {
+            // something went wrong
+            throw new IOException("Error while trying to restart the application", e);
+	}
+    }
+}
 

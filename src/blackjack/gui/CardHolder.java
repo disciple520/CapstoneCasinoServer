@@ -5,9 +5,6 @@
  */
 package blackjack.gui;
 
-import blackjack.core.Card;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 
@@ -16,9 +13,6 @@ import javax.swing.JPanel;
  * @author Hellz
  */
 public class CardHolder extends JPanel {
-    private int cardSpot;
-    private int xCoor;
-    private int yCoor;
     
     public CardHolder() {
         setOpaque(false);
@@ -26,6 +20,6 @@ public class CardHolder extends JPanel {
     
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);     
+        super.paintComponent(g);
     }
 }
