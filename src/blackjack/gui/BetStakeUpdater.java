@@ -34,7 +34,7 @@ public class BetStakeUpdater {
     //when placing bet, subtracts it from you stake
     public int updateStake() {
        stakeTracker =  stakeTracker - getBet();
-       if(stakeTracker <= 0){
+       if(stakeTracker < 0){
            stakeTracker = 1499;
        }
        return stakeTracker;
