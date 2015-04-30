@@ -76,6 +76,7 @@ public class BlackjackServer {
         //player only only creates stuff for single player
         try {
             while (true) {
+                
                 Session session = new Session();
                 playerOne = session.new Player(listener.accept(), 1);
                 System.out.println("player 1 accepted!");

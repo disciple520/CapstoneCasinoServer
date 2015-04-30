@@ -216,7 +216,7 @@ public class BlackjackClient {
      */
     public static void main(String[] args) throws Exception {
         while (true) {
-            String serverAddress = (args.length == 0) ? "localhost" : args[1];
+            String serverAddress = (args.length == 0) ? "97.80.81.158" : args[1];
             BlackjackClient client = new BlackjackClient(serverAddress);
             System.out.println("Client created");
             client.play();
