@@ -14,6 +14,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class BlackjackClient {
@@ -80,6 +81,7 @@ public class BlackjackClient {
                     if (response.startsWith("SET_PLAYER_")) {
                         playerNumber = Integer.parseInt(response.substring(11));
                         System.out.println("playerNumber set to " + playerNumber);
+                        gui.swingWorkerPlayerSeat(playerNumber);
                     }
                     else if (response.equals("DEAL")) {
                        gui.clearCardHolderPanels();
@@ -216,7 +218,8 @@ public class BlackjackClient {
      */
     public static void main(String[] args) throws Exception {
         while (true) {
-            String serverAddress = (args.length == 0) ? "97.80.81.158" : args[1];
+            String IPAddress = JOptionPane.showInputDialog ("Enter IP Address" );
+            String serverAddress = (args.length == 0) ? IPAddress : args[1];
             BlackjackClient client = new BlackjackClient(serverAddress);
             System.out.println("Client created");
             client.play();

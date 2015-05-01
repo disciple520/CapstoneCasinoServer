@@ -12,7 +12,7 @@ public class BetStakeUpdater {
     //this add the new button presses to the existing bet
     //also makes sure you have the funded to do the bet
     public int updateBet(int addedBet) {
-        if(betTracker <= stakeTracker)
+        if(betTracker < stakeTracker)
         {
             betTracker = addedBet + betTracker;
             return betTracker;
@@ -34,7 +34,7 @@ public class BetStakeUpdater {
     //when placing bet, subtracts it from you stake
     public int updateStake() {
        stakeTracker =  stakeTracker - getBet();
-       if(stakeTracker < 0){
+       if(stakeTracker <= 0){
            stakeTracker = 1499;
        }
        return stakeTracker;

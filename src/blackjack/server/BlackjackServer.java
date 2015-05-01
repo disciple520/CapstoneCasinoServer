@@ -44,7 +44,7 @@ public class BlackjackServer {
     static List<Integer> playerFourRanks = new ArrayList<>();
     static List<Integer> playerFourSuits = new ArrayList<>();
     static List<Integer> dealerRanks = new ArrayList<>();
-    static List<Integer> dealerSuits = new ArrayList<>();
+    static List<Integer> dealerSuits = new ArrayList<>(); 
     
     //set up basic constructor for UI implementation and restart functionality
     public BlackjackServer() throws Exception{
@@ -117,7 +117,7 @@ public class BlackjackServer {
                         getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
                         //updates current turn slot
                         sendMessageAllClients("TURN_"+currentSeat);
-                        Thread.sleep(2000); //give dealer time to check for blackjack
+                        Thread.sleep(1000); //give dealer time to check for blackjack
                         if (getPlayer(currentSeat).dealerHasBlackjack == false) {
                             System.out.println("Dealer does not have blackjack");
                             //while not dealers turn does logic for players

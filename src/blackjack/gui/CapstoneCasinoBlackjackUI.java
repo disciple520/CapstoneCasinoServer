@@ -186,6 +186,24 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         };
         worker.execute();
     }
+    //worker to set the label telling what player you are
+    public void swingWorkerPlayerSeat(int stake) {
+        SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+            
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                return false;
+                
+            }
+            @Override
+            protected void done() {
+                ConnectedPlayerLabel.setText("You: Player: "+stake);
+            }
+
+
+        };
+        worker.execute();
+    }    
     //sets up the spaces for cards to get drawn into
     private void PanelHolderSetup() {
         cardHolderPlayer4 = new CardHolder();
@@ -248,6 +266,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         player2NameLabel = new javax.swing.JLabel();
         player3NameLabel = new javax.swing.JLabel();
         player4NameLabel = new javax.swing.JLabel();
+        ConnectedPlayerLabel = new javax.swing.JLabel();
         backGroundGraphic = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -460,6 +479,11 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         getContentPane().add(player4NameLabel);
         player4NameLabel.setBounds(70, 120, 150, 30);
 
+        ConnectedPlayerLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        ConnectedPlayerLabel.setText("Player 1");
+        getContentPane().add(ConnectedPlayerLabel);
+        ConnectedPlayerLabel.setBounds(240, 50, 150, 30);
+
         backGroundGraphic.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         backGroundGraphic.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/BlackjackBackground.png"))); // NOI18N
         backGroundGraphic.setFocusable(false);
@@ -530,6 +554,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
     }//GEN-LAST:event_playButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel ConnectedPlayerLabel;
     private javax.swing.JLabel backGroundGraphic;
     public javax.swing.JButton betCheck1;
     public javax.swing.JButton betCheck100;
