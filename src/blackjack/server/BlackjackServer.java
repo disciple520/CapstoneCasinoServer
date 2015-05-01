@@ -13,18 +13,15 @@ import javax.swing.SwingUtilities;
 
 public class BlackjackServer {
     //variable declarations
-    private ServerUI serverUI;
-    private static final int NO_PLAYER = 0;
+    
     private static final int PLAYER_ONE = 1;
-    private static final int PLAYER_TWO = 2;
-    private static final int PLAYER_THREE = 3;
-    private static final int PLAYER_FOUR = 4;
     private static final int DEALER = 5;
     
     public static final int NO_ACTION = 0;
     public static final int HIT = 1;
     public static final int STAND = 2;
     public static final int DOUBLE = 3;
+    
     public static int maxPlayers = 4;
     private static Random rand = new Random();
     private static Session.Player playerOne;
@@ -34,6 +31,7 @@ public class BlackjackServer {
     private static int currentSeat;
     private static boolean dealerShouldPlay;
     private static Session.Player currentPlayer;
+    private ServerUI serverUI;
     
     static List<Integer> playerOneRanks = new ArrayList<>();
     static List<Integer> playerOneSuits = new ArrayList<>();

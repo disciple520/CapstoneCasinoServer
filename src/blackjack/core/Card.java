@@ -1,3 +1,5 @@
+// Pulled from https://code.google.com/p/blackjack-school-project/
+
 package blackjack.core;
 
 /**
