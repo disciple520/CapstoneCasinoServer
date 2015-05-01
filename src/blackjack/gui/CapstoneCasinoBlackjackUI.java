@@ -39,6 +39,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         this.client = blackjackClient;
         PanelHolderSetup();
         initComponents();
+
    
     }
 
@@ -80,7 +81,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
                 }
                 CardPanel newCard = new CardPanel(card);
                 currentHolder.add(newCard);
-                newCard.setLocation(currentHolder.getComponentCount()*20,0);
+                newCard.setLocation((205-80)-currentHolder.getComponentCount()*20,0);
             }
 
 
@@ -280,6 +281,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         betCheck1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/oneDChipNormal.png"))); // NOI18N
         betCheck1.setBorderPainted(false);
         betCheck1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        betCheck1.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/oneDChipNormal.png"))); // NOI18N
+        betCheck1.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/oneDChipNormal.png"))); // NOI18N
         betCheck1.setFocusPainted(false);
         betCheck1.setMultiClickThreshhold(200L);
         betCheck1.setName("betCheckOneDollar"); // NOI18N
@@ -295,6 +298,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         betCheck5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiveDChipNormal.png"))); // NOI18N
         betCheck5.setBorderPainted(false);
         betCheck5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        betCheck5.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiveDChipNormal.png"))); // NOI18N
+        betCheck5.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiveDChipNormal.png"))); // NOI18N
         betCheck5.setFocusPainted(false);
         betCheck5.setMultiClickThreshhold(200L);
         betCheck5.setName("betCheckFiveDollars"); // NOI18N
@@ -310,6 +315,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         betCheck25.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/twentyfiveDChipNormal.png"))); // NOI18N
         betCheck25.setBorderPainted(false);
         betCheck25.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        betCheck25.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/twentyfiveDChipNormal.png"))); // NOI18N
+        betCheck25.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/twentyfiveDChipNormal.png"))); // NOI18N
         betCheck25.setFocusPainted(false);
         betCheck25.setMultiClickThreshhold(200L);
         betCheck25.setName("betCheckTwentyFiveDollars"); // NOI18N
@@ -325,6 +332,8 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         betCheck50.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiftyDChipNormal.png"))); // NOI18N
         betCheck50.setBorderPainted(false);
         betCheck50.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        betCheck50.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiftyDChipNormal.png"))); // NOI18N
+        betCheck50.setDisabledSelectedIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/fiftyDChipNormal.png"))); // NOI18N
         betCheck50.setFocusPainted(false);
         betCheck50.setMultiClickThreshhold(20L);
         betCheck50.setName("betCheckFiftyDollars"); // NOI18N
@@ -340,6 +349,7 @@ public class CapstoneCasinoBlackjackUI extends javax.swing.JFrame implements Act
         betCheck100.setIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/hundredDChipNormal.png"))); // NOI18N
         betCheck100.setBorderPainted(false);
         betCheck100.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        betCheck100.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/blackjack/gui/hundredDChipNormal.png"))); // NOI18N
         betCheck100.setFocusPainted(false);
         betCheck100.setMultiClickThreshhold(200L);
         betCheck100.setName("betCheckOneHundredDollars"); // NOI18N

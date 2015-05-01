@@ -195,6 +195,9 @@ public class BlackjackClient {
                         } else if (response.equals("3:2")) {
                             stake += (2.5 * bet);
                         } else if (response.equals("TAKE")) {
+                            if (stake == 0) {
+                                stake = 1499;
+                            }
                             // No action needed since we reduce their stake at play time
                         }
                         gui.betStakeUpdater.setStake(stake);
