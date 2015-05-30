@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package blackjack.client;
 
 import blackjack.core.Card;
@@ -20,19 +15,24 @@ import javax.swing.SwingUtilities;
 public class BlackjackClient {
 
     private static final int PORT = 12345;
+    
     private final Socket socket;
     private final BufferedReader inputFromServer;
     private final PrintWriter outputToServer;
+    
     private CapstoneCasinoBlackjackUI gui;
     private Image cardImages;
+    
     private Card card;
-    public int playerNumber;
-    Hand hand;
-    Hand dealersHand;
-    int stake;
-    public int bet;
-    boolean isDealersFirstCard = true;
-    boolean isDealersTurn = false;
+    private Hand hand;
+    private Hand dealersHand;
+    
+    private int playerNumber;
+    private int stake;
+    private int bet;
+    
+    private boolean isDealersFirstCard = true;
+    private boolean isDealersTurn = false;
 
     /**
      * Constructs the client by connecting to a server and laying out the gui
@@ -42,14 +42,12 @@ public class BlackjackClient {
         hand = new Hand();
         dealersHand = new Hand();
         
-        
         // Setup networking
         socket = new Socket(serverAddress, PORT);
         inputFromServer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         outputToServer = new PrintWriter(socket.getOutputStream(), true);
         System.out.println("In client constructor");
       
-
         // Layout GUI
         gui = new CapstoneCasinoBlackjackUI(this);
         gui.setLocation(200, 50);
@@ -140,8 +138,6 @@ public class BlackjackClient {
                             gui.swingWorkerTurn("Dealer");
                     }
                     else if(response.equals("CLOSE")){
-                        //closes all attached clients
-                        //found in http://stackoverflow.com/questions/1234912/how-to-programmatically-close-a-jframe
                         gui.dispatchEvent(new WindowEvent(gui,WindowEvent.WINDOW_CLOSING));
                     }
                     //This is a command of the form "DEALING_RANK_OF_SUIT_TO_PLAYER
@@ -154,10 +150,6 @@ public class BlackjackClient {
                         card = new Card(rank, suit);
                         if (placement == playerNumber) {
                             hand.addCard(card);
-//                            gui.cardHolderPlayer1.removeAll();
-//                            for(int i=0; i<hand.getSizeOfHand(); i++){
-//                                gui.swingWorkerCardDraw(hand.getCardAtIndex(i), placement);
-//                            }
                             if (hand.isBusted()) {
                                 sendMessageToServer("PLAYER_BUSTED");
                             } else {
@@ -172,17 +164,12 @@ public class BlackjackClient {
                                 isDealersFirstCard = false;
                             }
                             dealersHand.addCard(card);
-//                            gui.cardHolderDealer.removeAll();
-//                            for(int i=dealersHand.getSizeOfHand()-1; i>=0; i--){
-//                                gui.swingWorkerCardDraw(hand.getCardAtIndex(i), placement);
-//                            }
                             sendMessageToServer("DEALERS_HAND_VALUE_IS_" + dealersHand.getValue());
                             if (dealersHand.isBlackjack()) {
                                 sendMessageToServer("BLACKJACK_FOR_DEALER");
                             } else if (dealersHand.isBusted()) {
                                 sendMessageToServer("DEALER_BUSTED");
                             }
-                                
                         }
                         gui.swingWorkerCardDraw(card, placement);
                     } else if(response.equals("PAY") || response.equals("TAKE") || response.equals("PUSH") || response.equals("3:2")) {
@@ -208,9 +195,8 @@ public class BlackjackClient {
                         gui.swingWorkerTurn("Betting");
                     }
                 }
-               }
-         
             }
+        }
         
         finally {
             socket.close();

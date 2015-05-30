@@ -22,7 +22,7 @@ public class BlackjackServer {
     public static final int STAND = 2;
     public static final int DOUBLE = 3;
     
-    public static int maxPlayers = 4;
+    private static int maxPlayers = 4;
     private static Random rand = new Random();
     private static Session.Player playerOne;
     private static Session.Player playerTwo;
@@ -32,17 +32,6 @@ public class BlackjackServer {
     private static boolean dealerShouldPlay;
     private static Session.Player currentPlayer;
     private ServerUI serverUI;
-    
-    static List<Integer> playerOneRanks = new ArrayList<>();
-    static List<Integer> playerOneSuits = new ArrayList<>();
-    static List<Integer> playerTwoRanks = new ArrayList<>();
-    static List<Integer> playerTwoSuits = new ArrayList<>();
-    static List<Integer> playerThreeRanks = new ArrayList<>();
-    static List<Integer> playerThreeSuits = new ArrayList<>();
-    static List<Integer> playerFourRanks = new ArrayList<>();
-    static List<Integer> playerFourSuits = new ArrayList<>();
-    static List<Integer> dealerRanks = new ArrayList<>();
-    static List<Integer> dealerSuits = new ArrayList<>(); 
     
     //set up basic constructor for UI implementation and restart functionality
     public BlackjackServer() throws Exception{
@@ -61,7 +50,7 @@ public class BlackjackServer {
         BlackjackServer server = new BlackjackServer();
         server.play();
     }
-    //logic for what what is happening while server is runn
+    //logic for what what is happening while server is run
     //contains all the logic for the game itself
     public void play() throws Exception {
         //sets up listener for clients to connect to
@@ -99,22 +88,16 @@ public class BlackjackServer {
                     playerFour.sendMessageToClient("DISABLE_ACTION_BUTTONS");
                 }
                 //game logic
-                while (true) { // this is where all the complexity lies
+                while (true) {
                     Thread.sleep(250);
                     System.out.print("wait  ");
-                    buildFirstHands();
-                    //once everyone has their ebts in, sets the condition to true
-                    if (checkAllPlayersReadyStatus() == true) {
+                    if (allPlayersAreReady() == true) {
                         playerOne.dealerBusted = false;
                         sendMessageAllClients("DEAL");
-                        //updates label to show what everyones bets are
                         ShowPlayerBets();
-                        //draws the cards on the gui
                         sendHandsToClients(); 
-                        //text based commands to turn on and off buttons
                         getPlayer(currentSeat).sendMessageToClient("ENABLE_ACTION_BUTTONS");
-                        //updates current turn slot
-                        sendMessageAllClients("TURN_"+currentSeat);
+                        sendMessageAllClients("TURN_" + currentSeat);
                         Thread.sleep(1000); //give dealer time to check for blackjack
                         if (getPlayer(currentSeat).dealerHasBlackjack == false) {
                             System.out.println("Dealer does not have blackjack");
@@ -126,9 +109,8 @@ public class BlackjackServer {
                                         //what happens when player hits
                                         if (getPlayer(currentSeat).action == HIT){
                                             System.out.println("Player "+ currentSeat+" hit!");
-                                            addCard();
                                             //tells all clients what card to draw and where
-                                            sendMessageAllClients("DEALING_" + getPlayerRanksArray().get(getPlayerRanksArray().size()-1) + "_OF_" + getPlayerSuitArray().get(getPlayerSuitArray().size()-1) + "_TO" + "_"+currentSeat);
+                                            sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_"+ currentSeat);
                                             getPlayer(currentSeat).action = NO_ACTION;
                                         }
                                         //when double button is pressed it comes to here
@@ -166,8 +148,7 @@ public class BlackjackServer {
                                     Thread.sleep(1000);
                                     if (playerOne.dealersHandValue < 17) {
                                         System.out.println("Dealer hits");
-                                        addCard();
-                                        sendMessageAllClients("DEALING_" + getPlayerRanksArray().get(getPlayerRanksArray().size()-1) + "_OF_" + getPlayerSuitArray().get(getPlayerSuitArray().size()-1) + "_TO" + "_5");
+                                        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_5");
                                     }
                                     //reset the current player to player 1
                                     else if (playerOne.dealerBusted) {
@@ -203,8 +184,6 @@ public class BlackjackServer {
                             getPlayer(i).isReadyForDeal = false;
                         }
                     }
-                    //clears card arrays for a fresh set
-                    clearArrays();
                 }
             }
         } finally {
@@ -212,7 +191,7 @@ public class BlackjackServer {
         }
     }
     //if false until all bets are placed
-    private static boolean checkAllPlayersReadyStatus() {
+    private static boolean allPlayersAreReady() {
         if(maxPlayers == 1) {
             return playerOne.isReadyForDeal;
         }
@@ -227,38 +206,38 @@ public class BlackjackServer {
     private static void sendHandsToClients() throws InterruptedException {
         
         if(maxPlayers == 1) {
-        sendMessageAllClients("DEALING_" + playerOneRanks.get(0) + "_OF_" + playerOneSuits.get(0) + "_TO" + "_1");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_1");
         Thread.sleep(300);
-        sendMessageAllClients("DEALING_" + dealerRanks.get(0) + "_OF_" + dealerSuits.get(0) + "_TO" + "_5");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_5");
         Thread.sleep(300);
-        sendMessageAllClients("DEALING_" + playerOneRanks.get(1) + "_OF_" + playerOneSuits.get(1) + "_TO" + "_1");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_1");
         Thread.sleep(300);
-        sendMessageAllClients("DEALING_" + dealerRanks.get(1) + "_OF_" + dealerSuits.get(1) + "_TO" + "_5");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_5");
         Thread.sleep(300);
         }
         
         else if(maxPlayers == 4) {
 
-        sendMessageAllClients("DEALING_" + playerOneRanks.get(0) + "_OF_" + playerOneSuits.get(0) + "_TO" + "_1");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_1");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerTwoRanks.get(0) + "_OF_" + playerTwoSuits.get(0) + "_TO" + "_2");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_2");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerThreeRanks.get(0) + "_OF_" + playerThreeSuits.get(0) + "_TO" + "_3");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_3");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerFourRanks.get(0) + "_OF_" + playerFourSuits.get(0) + "_TO" + "_4");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_4");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + dealerRanks.get(0) + "_OF_" + dealerSuits.get(0) + "_TO" + "_5");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_5");
 
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerOneRanks.get(1) + "_OF_" + playerOneSuits.get(1) + "_TO" + "_1");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_1");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerTwoRanks.get(1) + "_OF_" + playerTwoSuits.get(1) + "_TO" + "_2");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_2");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerThreeRanks.get(1) + "_OF_" + playerThreeSuits.get(1) + "_TO" + "_3");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_3");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + playerFourRanks.get(1) + "_OF_" + playerFourSuits.get(1) + "_TO" + "_4");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_4");
         Thread.sleep(200);
-        sendMessageAllClients("DEALING_" + dealerRanks.get(1) + "_OF_" + dealerSuits.get(1) + "_TO" + "_5");
+        sendMessageAllClients("DEALING_" + (rand.nextInt(13)+1) + "_OF_" + (rand.nextInt(4)) + "_TO" + "_5");
         Thread.sleep(200);
         }        
     }
@@ -271,69 +250,7 @@ public class BlackjackServer {
             playerFour.sendMessageToClient(message);
         }
     }
-    //gets random variables for suits and ranks array for every player
-    private static void buildFirstHands() {
-        playerOneRanks.add(rand.nextInt(13)+1);
-        playerOneRanks.add(rand.nextInt(13)+1);
-        playerOneSuits.add(rand.nextInt(4));
-        playerOneSuits.add(rand.nextInt(4));
-        
-        dealerRanks.add(rand.nextInt(13)+1);
-        dealerRanks.add(rand.nextInt(13)+1);
-        dealerSuits.add(rand.nextInt(4));
-        dealerSuits.add(rand.nextInt(4));
-        
-        if(maxPlayers != 1) {
-            
-            playerTwoRanks.add(rand.nextInt(13)+1);
-            playerTwoRanks.add(rand.nextInt(13)+1);
-            playerTwoSuits.add(rand.nextInt(4));
-            playerTwoSuits.add(rand.nextInt(4));
-
-            playerThreeRanks.add(rand.nextInt(13)+1);
-            playerThreeRanks.add(rand.nextInt(13)+1);
-            playerThreeSuits.add(rand.nextInt(4));
-            playerThreeSuits.add(rand.nextInt(4));
-
-            playerFourRanks.add(rand.nextInt(13)+1);
-            playerFourRanks.add(rand.nextInt(13)+1);
-            playerFourSuits.add(rand.nextInt(4));
-            playerFourSuits.add(rand.nextInt(4));
-        }
-    }
-    //when hit is called, this adds a card to proper array
-    private static void addCard() {
-        getPlayerSuitArray().add(rand.nextInt(4));
-        getPlayerRanksArray().add(rand.nextInt(13)+1);
-    }
-    //gets the suit array for correct player based on their seatNumber
-    private static List<Integer> getPlayerSuitArray(){
-        
-        if(currentSeat == 1)
-            return playerOneSuits;
-        if(currentSeat == 2)
-           return playerTwoSuits;
-        if(currentSeat == 3)
-           return playerThreeSuits;
-        if(currentSeat == 4)
-           return playerFourSuits;
-        else
-           return dealerSuits;
-    }
-    //same as above for ranks of the cards
-    private static List<Integer> getPlayerRanksArray(){
-        
-        if(currentSeat == 1)
-            return playerOneRanks;
-        if(currentSeat == 2)
-           return playerTwoRanks;
-        if(currentSeat == 3)
-           return playerThreeRanks;
-        if(currentSeat == 4)
-           return playerFourRanks;
-        else
-           return dealerRanks;
-    }
+    
     //used to get the current player based on seatNumber or passed in int
     private static Session.Player getPlayer(int playersTurn) {
         if(playersTurn == 1)
@@ -404,20 +321,7 @@ public class BlackjackServer {
             getPlayer(i).sendMessageToClient(msg);
         }
     }
-    //clears all arrays at the end of the hand
-    private static void clearArrays() {
-        playerOneSuits.clear();
-        playerTwoSuits.clear();
-        playerThreeSuits.clear();
-        playerFourSuits.clear();
-        dealerSuits.clear();
-        playerOneRanks.clear();
-        playerTwoRanks.clear();
-        playerThreeRanks.clear();
-        playerFourRanks.clear();
-        dealerRanks.clear();
-    }
-    //updates player labels to include bet amount
+    
     private static void ShowPlayerBets() {
         sendMessageAllClients("UPDATE_1_BET_"+playerOne.bet);
         if(maxPlayers != 1){

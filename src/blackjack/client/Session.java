@@ -14,7 +14,7 @@ import java.util.logging.Logger;
      */
 public class Session {
     
-    private static final int NO_PLAYER = 1;
+    private static final int NO_PLAYER = 0;
     private static final int PLAYER_ONE = 1;
     private static final int PLAYER_TWO = 2;
     private static final int PLAYER_THREE = 3;
